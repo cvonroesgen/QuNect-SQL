@@ -7,22 +7,64 @@ Public Class frmSQL
     Public ds As DataSet
     Public connection As OdbcConnection
     Private WithEvents dtp As New DateTimePicker
+    Private Shared fidRegex As New Regex(".* fid(\d+)$", RegexOptions.IgnoreCase)
     Private Class qdbVersion
         Public year As Integer
         Public major As Integer
         Public minor As Integer
     End Class
+    Private Class qdbAppTable
+        Public Sub New(_catalog As String, _dbid As String, _Name As String)
+            dbid = _dbid
+            Name = _Name
+            catalog = _catalog
+        End Sub
+        Public dbid As String
+        Public Name As String
+        Public catalog As String
+        Overrides Function toString() As String
+            Return Name
+        End Function
+
+    End Class
+    Private Class qdbColumn
+        Public Sub New(_Catalog As String, _Name As String, _type As String, _size As String, _decimalPlaces As String, _remark As String)
+            Dim m As Match = fidRegex.Match(_remark)
+            If m.Success Then
+                fid = m.Groups(1).Value
+            Else
+                fid = "0"
+            End If
+            Name = _Name
+            remark = _remark
+            type = _type
+            catalog = _Catalog
+            size = _size
+            decimalPlaces = _decimalPlaces
+        End Sub
+        Public fid As String
+        Public Name As String
+        Public remark As String
+        Public type As String
+        Public catalog As String
+        Public size As String
+        Public decimalPlaces As String
+        Overrides Function toString() As String
+            Return Name
+        End Function
+
+    End Class
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.10" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.12" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
         txtServer.Text = GetSetting(AppName, "Credentials", "server", "www.quickbase.com")
         txtAppToken.Text = GetSetting(AppName, "Credentials", "apptoken", "b2fr52jcykx3tnbwj8s74b8ed55b")
         txtSQL.Text = GetSetting(AppName, "SQL", "sql", "select * from ")
-        txtSQL.SelectionStart = CInt(GetSetting(AppName, "SQL", "selectionStart", ""))
-        txtSQL.SelectionLength = CInt(GetSetting(AppName, "SQL", "selectionLength", ""))
+        txtSQL.SelectionStart = CInt(GetSetting(AppName, "SQL", "selectionStart", "0"))
+        txtSQL.SelectionLength = CInt(GetSetting(AppName, "SQL", "selectionLength", "0"))
         Dim detectProxySetting As String = GetSetting(AppName, "Credentials", "detectproxysettings", "0")
         If detectProxySetting = "1" Then
             ckbDetectProxy.Checked = True
@@ -222,11 +264,21 @@ Public Class frmSQL
             'need to get a list of tables
             cmbTables.Items.Clear()
             cmbTables.Items.Add("Please choose a table")
-            Dim tables As DataTable = connection.GetSchema("Tables")
-            For i = 0 To tables.Rows.Count - 1
-                cmbTables.Items.Add(tables.Rows(i)(2))
-            Next
+            Using tables As DataTable = connection.GetSchema("Tables")
+                For i = 0 To tables.Rows.Count - 1
+                    cmbTables.Items.Add(New qdbAppTable(tables.Rows(i)(0), tables.Rows(i)(4), tables.Rows(i)(2)))
+                Next
+            End Using
             cmbTables.SelectedIndex = 0
+            cmbCatalogs.Items.Clear()
+            cmbCatalogs.Items.Add("Please choose an Application")
+            Using quNectCmd = New OdbcCommand("SELECT * FROM CATALOGS", connection)
+                Dim dr As OdbcDataReader = quNectCmd.ExecuteReader()
+                While (dr.Read())
+                    cmbCatalogs.Items.Add(New qdbAppTable(dr.GetString(0), dr.GetString(4), dr.GetString(0)))
+                End While
+            End Using
+            cmbCatalogs.SelectedIndex = 0
             showSQLControls(True)
             txtSQL.Focus()
         Catch ex As Exception
@@ -249,16 +301,14 @@ Public Class frmSQL
             Exit Sub
         End If
         Me.Cursor = Cursors.WaitCursor
-
-        cmbFields.Items.Clear()
-        cmbFields.Items.Add("Please choose a column")
+        ListBoxColumns.Items.Clear()
         Dim restrictions(2) As String
-        restrictions(2) = CType(cmbTables.SelectedItem, String)
+        restrictions(2) = cmbTables.SelectedItem.ToString()
         Dim columns As DataTable = connection.GetSchema("Columns", restrictions)
         For i = 0 To columns.Rows.Count - 1
-            cmbFields.Items.Add(columns.Rows(i)(3))
+            ListBoxColumns.Items.Add(New qdbColumn(columns.Rows(i)(0), columns.Rows(i)(3), columns.Rows(i)(5), columns.Rows(i)(6), columns.Rows(i)(8), columns.Rows(i)(11)))
         Next
-        cmbFields.SelectedIndex = 0
+        ListBoxColumns.SelectedIndex = -1
         GroupBoxTables.Visible = True
 
         Me.Cursor = Cursors.Default
@@ -289,92 +339,83 @@ Public Class frmSQL
     Private Sub btnText_Click(sender As Object, e As EventArgs) Handles btnText.Click
         insertReplaceText(txtSQL, "'" & txtText.Text & "'")
     End Sub
-
-    Private Sub btnColumn_Click(sender As Object, e As EventArgs) Handles btnColumn.Click
-        If cmbFields.SelectedIndex <= 0 Then Exit Sub
-        insertReplaceText(txtSQL, """" & cmbFields.Text & """")
-    End Sub
-
-    Private Sub btnTable_Click(sender As Object, e As EventArgs) Handles btnTable.Click
-        If cmbTables.SelectedIndex <= 0 Then Exit Sub
-        insertReplaceText(txtSQL, """" & cmbTables.Text & """")
-    End Sub
-
     Private Sub btnCheckSQL_Click(sender As Object, e As EventArgs) Handles btnCheckSQL.Click
         checkExecuteSQL(True)
-    End Sub
-
-    Private Sub btnSelect_Click(sender As Object, e As EventArgs) Handles btnSelect.Click
-        If cmbTables.SelectedIndex <= 0 Then Exit Sub
-        Dim sql As String = "SELECT "
-        Dim comma As String = """"
-        For i = 1 To cmbFields.Items.Count - 1
-            sql &= comma & cmbFields.Items(i).ToString
-            comma = """, """
-        Next
-        sql &= """ FROM """ & cmbTables.SelectedItem.ToString & """"
-        insertReplaceText(txtSQL, sql)
-    End Sub
-
-    Private Sub btnSelectOneColumn_Click(sender As Object, e As EventArgs) Handles btnSelectOneColumn.Click
-        If cmbFields.SelectedIndex <= 0 Then Exit Sub
-        Dim sql As String = "SELECT """
-        sql &= cmbFields.SelectedItem.ToString
-        sql &= """ FROM """ & cmbTables.SelectedItem.ToString & """"
-        insertReplaceText(txtSQL, sql)
     End Sub
 
     Private Sub chkWrap_CheckedChanged(sender As Object, e As EventArgs) Handles chkWrap.CheckedChanged
         txtSQL.WordWrap = chkWrap.Checked
     End Sub
 
-    Private Function createCommaSeparatedValues(ByRef columns As DataTable, withColumns As Boolean, onlyThisOne As Integer) As String
+    Private Function createCommaSeparatedValues(ByRef columns As ListBox.SelectedObjectCollection, withColumns As Boolean) As String
+        If columns.Count = 0 Then
+            For i As Integer = 0 To ListBoxColumns.Items.Count - 1
+                ListBoxColumns.SetSelected(i, True)
+            Next
+        End If
         Dim charRegex As New Regex("char", RegexOptions.IgnoreCase)
         Dim dateRegex As New Regex("date$", RegexOptions.IgnoreCase)
         Dim dateTimeRegex As New Regex("datetime", RegexOptions.IgnoreCase)
         Dim TimeRegex As New Regex("^time", RegexOptions.IgnoreCase)
         createCommaSeparatedValues = ""
-        For i = 0 To columns.Rows.Count - 1
-            If onlyThisOne > 0 And i <> onlyThisOne - 1 Then
-                Continue For
-            End If
+        For i = 0 To columns.Count - 1
             If withColumns Then
-                    createCommaSeparatedValues &= """" & columns.Rows(i)(3).ToString & """ = "
-                End If
-                Dim type As String = columns.Rows(i)(5).ToString
-                If charRegex.IsMatch(type) Then
-                    createCommaSeparatedValues &= "'" & txtText.Text & "', "
-                ElseIf dateRegex.IsMatch(type) Then
-                    createCommaSeparatedValues &= "{d '" & dateForm.Text & "'}, "
-                ElseIf dateTimeRegex.IsMatch(type) Then
-                    createCommaSeparatedValues &= "{ts '" & DateTimeForm.Text & "'}, "
-                ElseIf TimeRegex.IsMatch(type) Then
-                    createCommaSeparatedValues &= "{t '" & TimeForm.Text & "'}, "
-                Else
-                    createCommaSeparatedValues &= "0, "
-                End If
+                createCommaSeparatedValues &= """" & columns(i).Name.ToString & """ = "
+            End If
+            Dim type As String = columns(i).type
+            If charRegex.IsMatch(type) Then
+                createCommaSeparatedValues &= "'" & txtText.Text & "', "
+            ElseIf dateRegex.IsMatch(type) Then
+                createCommaSeparatedValues &= "{d '" & dateForm.Text & "'}, "
+            ElseIf dateTimeRegex.IsMatch(type) Then
+                createCommaSeparatedValues &= "{ts '" & DateTimeForm.Text & "'}, "
+            ElseIf TimeRegex.IsMatch(type) Then
+                createCommaSeparatedValues &= "{t '" & TimeForm.Text & "'}, "
+            Else
+                createCommaSeparatedValues &= "0, "
+            End If
         Next
         createCommaSeparatedValues = createCommaSeparatedValues.TrimEnd(New Char() {CType(",", Char), CType(" ", Char)})
     End Function
-    Private Function createCommaSeparatedColumns(ByRef columns As DataTable) As String
+    Private Function createCommaSeparatedColumns(ByRef columns As ListBox.SelectedObjectCollection, fromCreateSelect As Boolean, addType As Boolean) As String
+        If fromCreateSelect And columns.Count = 0 Then
+            Return "*"
+        End If
         createCommaSeparatedColumns = ""
-        Dim comma As String = """"
-        For i = 0 To columns.Rows.Count - 1
-            createCommaSeparatedColumns &= comma & columns.Rows(i)(3).ToString
-            comma = """, """
+        Dim comma As String = ""
+        If columns.Count = 0 Then
+            For i As Integer = 0 To ListBoxColumns.Items.Count - 1
+                ListBoxColumns.SetSelected(i, True)
+            Next
+        End If
+        For i = 0 To columns.Count - 1
+            createCommaSeparatedColumns &= comma & """" & columns(i).Name & """"
+            If addType Then
+                createCommaSeparatedColumns &= " " & columns(i).type
+                If Regex.Match(columns(i).type, "varchar", RegexOptions.IgnoreCase).Success Then
+                    createCommaSeparatedColumns &= "(" + columns(i).size & ")"
+                End If
+                If Regex.Match(columns(i).type, "numeric", RegexOptions.IgnoreCase).Success Then
+                    createCommaSeparatedColumns &= "(" + columns(i).size & ", " & columns(i).decimalPlaces & ")"
+                End If
+            End If
+            comma = ", "
         Next
     End Function
-
+    Private Sub btnSelect_Click(sender As Object, e As EventArgs) Handles btnSelect.Click
+        If cmbTables.SelectedIndex <= 0 Then Exit Sub
+        Dim sql As String = "SELECT "
+        sql &= createCommaSeparatedColumns(ListBoxColumns.SelectedItems, True, False)
+        sql &= " FROM """ & cmbTables.SelectedItem.ToString & """"
+        insertReplaceText(txtSQL, sql)
+    End Sub
     Private Sub btnINSERT_Click(sender As Object, e As EventArgs) Handles btnINSERT.Click
         If cmbTables.SelectedIndex <= 0 Then Exit Sub
         Dim sql As String = "INSERT INTO " & """" & cmbTables.SelectedItem.ToString & """ ("
 
-        Dim restrictions(2) As String
-        restrictions(2) = CType(cmbTables.SelectedItem, String)
-        Dim columns As DataTable = connection.GetSchema("Columns", restrictions)
-        sql &= createCommaSeparatedColumns(columns)
+        sql &= createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, False)
         sql &= """) VALUES ( "
-        sql &= createCommaSeparatedValues(columns, False, 0)
+        sql &= createCommaSeparatedValues(ListBoxColumns.SelectedItems, False)
         sql = sql.TrimEnd(New Char() {CType(",", Char), CType(" ", Char)})
         sql &= ")"
         insertReplaceText(txtSQL, sql)
@@ -383,13 +424,9 @@ Public Class frmSQL
     Private Sub btnUPDATE_Click(sender As Object, e As EventArgs) Handles btnUPDATE.Click
         If cmbTables.SelectedIndex <= 0 Then Exit Sub
         Dim sql As String = "UPDATE " & """" & cmbTables.SelectedItem.ToString & """ SET "
-
-        Dim restrictions(2) As String
-        restrictions(2) = CType(cmbTables.SelectedItem, String)
-        Dim columns As DataTable = connection.GetSchema("Columns", restrictions)
-        sql &= createCommaSeparatedValues(columns, True, 0)
+        sql &= createCommaSeparatedValues(ListBoxColumns.SelectedItems, True)
         sql = sql.TrimEnd(New Char() {CType(",", Char), CType(" ", Char)})
-        sql &= " WHERE """ & columns.Rows(2)(3).ToString & """ = 0"
+        sql &= " WHERE """ & ListBoxColumns.Items(2).name & """ = 0"
 
         insertReplaceText(txtSQL, sql)
     End Sub
@@ -397,53 +434,32 @@ Public Class frmSQL
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         If cmbTables.SelectedIndex <= 0 Then Exit Sub
         Dim sql As String = "DELETE FROM " & """" & cmbTables.SelectedItem.ToString & """"
-
-        Dim restrictions(2) As String
-        restrictions(2) = CType(cmbTables.SelectedItem, String)
-        Dim columns As DataTable = connection.GetSchema("Columns", restrictions)
-        sql &= " WHERE """ & columns.Rows(2)(3).ToString & """ = 0"
+        sql &= " WHERE """ & ListBoxColumns.Items(2).name & """ = 0"
 
         insertReplaceText(txtSQL, sql)
     End Sub
 
-    Private Sub btnUPDATEColumn_Click(sender As Object, e As EventArgs) Handles btnUPDATEColumn.Click
-        If cmbTables.SelectedIndex <= 0 Then Exit Sub
-        If cmbFields.SelectedIndex <= 0 Then Exit Sub
-        Dim sql As String = "UPDATE " & """" & cmbTables.SelectedItem.ToString & """ SET "
-
-        Dim restrictions(2) As String
-        restrictions(2) = CType(cmbTables.SelectedItem, String)
-        Dim columns As DataTable = connection.GetSchema("Columns", restrictions)
-        sql &= createCommaSeparatedValues(columns, True, cmbFields.SelectedIndex)
-        sql = sql.TrimEnd(New Char() {CType(",", Char), CType(" ", Char)})
-        sql &= " WHERE """ & columns.Rows(2)(3).ToString & """ = 0"
-
-        insertReplaceText(txtSQL, sql)
-    End Sub
-
-    Private Sub btnINSERTColumn_Click(sender As Object, e As EventArgs) Handles btnINSERTColumn.Click
-        If cmbTables.SelectedIndex <= 0 Then Exit Sub
-        If cmbFields.SelectedIndex <= 0 Then Exit Sub
-        Dim sql As String = "INSERT INTO " & """" & cmbTables.SelectedItem.ToString & """ ("
-
-        Dim restrictions(2) As String
-        restrictions(2) = CType(cmbTables.SelectedItem, String)
-        Dim columns As DataTable = connection.GetSchema("Columns", restrictions)
-        sql &= """" & cmbFields.Text
-        sql &= """) VALUES ("
-        sql &= createCommaSeparatedValues(columns, False, cmbFields.SelectedIndex)
-        sql = sql.TrimEnd(New Char() {CType(",", Char), CType(" ", Char)})
-        sql &= ")"
-        insertReplaceText(txtSQL, sql)
-    End Sub
-
-    Private Sub cmbFields_TextChanged(sender As Object, e As EventArgs) Handles cmbFields.TextChanged
-        If cmbFields.SelectedIndex = 0 Then
-            GroupBoxColumn.Visible = False
-        Else
-            GroupBoxColumn.Visible = True
+    Private Sub btnCREATE_Click(sender As Object, e As EventArgs) Handles btnCREATE.Click
+        If cmbCatalogs.SelectedIndex = 0 Then
+            MsgBox("Please choose an application in which the new table will be created.", MsgBoxStyle.OkOnly)
+            Return
         End If
+        Dim tableName As String = cmbTables.Text
+        Dim catalog As String = cmbTables.SelectedItem.catalog
+        Dim m = Regex.Match(tableName, "^(.*)[ _][a-kmnp-z2-9]+$")
+        Dim sql As String = "CREATE TABLE ""Copy of " & m.Groups(1).Value.Substring(catalog.Length + 2) & " " & cmbCatalogs.Items(cmbCatalogs.SelectedIndex).dbid & """ (" & createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, True) & ")"
+        insertReplaceText(txtSQL, sql)
+    End Sub
 
+    Private Sub btnDROP_Click(sender As Object, e As EventArgs) Handles btnDROP.Click
+        If cmbTables.SelectedIndex <= 0 Then Exit Sub
+        Dim sql As String = "DROP TABLE " & """" & cmbTables.SelectedItem.ToString & """"
+        insertReplaceText(txtSQL, sql)
+    End Sub
+
+    Private Sub btnALTER_Click(sender As Object, e As EventArgs) Handles btnALTER.Click
+        Dim sql As String = "ALTER TABLE """ & cmbTables.Text & """ ADD " & createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, True)
+        insertReplaceText(txtSQL, sql)
     End Sub
 End Class
 

@@ -23,7 +23,6 @@ Partial Class frmSQL
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.lblProgress = New System.Windows.Forms.Label()
         Me.ckbDetectProxy = New System.Windows.Forms.CheckBox()
         Me.lblAppToken = New System.Windows.Forms.Label()
         Me.txtAppToken = New System.Windows.Forms.TextBox()
@@ -37,19 +36,16 @@ Partial Class frmSQL
         Me.lblDSN = New System.Windows.Forms.Label()
         Me.btnConnect = New System.Windows.Forms.Button()
         Me.gbSQL = New System.Windows.Forms.GroupBox()
+        Me.cmbCatalogs = New System.Windows.Forms.ComboBox()
+        Me.ListBoxColumns = New System.Windows.Forms.ListBox()
         Me.GroupBoxTables = New System.Windows.Forms.GroupBox()
+        Me.btnALTER = New System.Windows.Forms.Button()
+        Me.btnDROP = New System.Windows.Forms.Button()
+        Me.btnCREATE = New System.Windows.Forms.Button()
         Me.btnINSERT = New System.Windows.Forms.Button()
-        Me.btnTable = New System.Windows.Forms.Button()
         Me.btnDelete = New System.Windows.Forms.Button()
         Me.btnSelect = New System.Windows.Forms.Button()
-        Me.lblInsert = New System.Windows.Forms.Label()
         Me.btnUPDATE = New System.Windows.Forms.Button()
-        Me.GroupBoxColumn = New System.Windows.Forms.GroupBox()
-        Me.lblSelect2 = New System.Windows.Forms.Label()
-        Me.btnINSERTColumn = New System.Windows.Forms.Button()
-        Me.btnUPDATEColumn = New System.Windows.Forms.Button()
-        Me.btnColumn = New System.Windows.Forms.Button()
-        Me.btnSelectOneColumn = New System.Windows.Forms.Button()
         Me.chkWrap = New System.Windows.Forms.CheckBox()
         Me.btnGo = New System.Windows.Forms.Button()
         Me.btnCheckSQL = New System.Windows.Forms.Button()
@@ -57,7 +53,6 @@ Partial Class frmSQL
         Me.txtSQL = New System.Windows.Forms.TextBox()
         Me.btnText = New System.Windows.Forms.Button()
         Me.cmbTables = New System.Windows.Forms.ComboBox()
-        Me.cmbFields = New System.Windows.Forms.ComboBox()
         Me.btnTime = New System.Windows.Forms.Button()
         Me.dateForm = New System.Windows.Forms.DateTimePicker()
         Me.TimeForm = New System.Windows.Forms.DateTimePicker()
@@ -67,16 +62,7 @@ Partial Class frmSQL
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.gbSQL.SuspendLayout()
         Me.GroupBoxTables.SuspendLayout()
-        Me.GroupBoxColumn.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'lblProgress
-        '
-        Me.lblProgress.AutoSize = True
-        Me.lblProgress.Location = New System.Drawing.Point(186, 17)
-        Me.lblProgress.Name = "lblProgress"
-        Me.lblProgress.Size = New System.Drawing.Size(0, 13)
-        Me.lblProgress.TabIndex = 54
         '
         'ckbDetectProxy
         '
@@ -181,8 +167,9 @@ Partial Class frmSQL
         '
         'gbSQL
         '
+        Me.gbSQL.Controls.Add(Me.cmbCatalogs)
+        Me.gbSQL.Controls.Add(Me.ListBoxColumns)
         Me.gbSQL.Controls.Add(Me.GroupBoxTables)
-        Me.gbSQL.Controls.Add(Me.GroupBoxColumn)
         Me.gbSQL.Controls.Add(Me.chkWrap)
         Me.gbSQL.Controls.Add(Me.btnGo)
         Me.gbSQL.Controls.Add(Me.btnCheckSQL)
@@ -190,7 +177,6 @@ Partial Class frmSQL
         Me.gbSQL.Controls.Add(Me.txtSQL)
         Me.gbSQL.Controls.Add(Me.btnText)
         Me.gbSQL.Controls.Add(Me.cmbTables)
-        Me.gbSQL.Controls.Add(Me.cmbFields)
         Me.gbSQL.Controls.Add(Me.btnTime)
         Me.gbSQL.Controls.Add(Me.dateForm)
         Me.gbSQL.Controls.Add(Me.TimeForm)
@@ -204,42 +190,78 @@ Partial Class frmSQL
         Me.gbSQL.TabStop = False
         Me.gbSQL.Visible = False
         '
+        'cmbCatalogs
+        '
+        Me.cmbCatalogs.FormattingEnabled = True
+        Me.cmbCatalogs.Location = New System.Drawing.Point(436, 46)
+        Me.cmbCatalogs.Name = "cmbCatalogs"
+        Me.cmbCatalogs.Size = New System.Drawing.Size(337, 21)
+        Me.cmbCatalogs.TabIndex = 89
+        '
+        'ListBoxColumns
+        '
+        Me.ListBoxColumns.FormattingEnabled = True
+        Me.ListBoxColumns.Location = New System.Drawing.Point(779, 8)
+        Me.ListBoxColumns.Name = "ListBoxColumns"
+        Me.ListBoxColumns.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.ListBoxColumns.Size = New System.Drawing.Size(245, 134)
+        Me.ListBoxColumns.TabIndex = 88
+        '
         'GroupBoxTables
         '
+        Me.GroupBoxTables.Controls.Add(Me.btnALTER)
+        Me.GroupBoxTables.Controls.Add(Me.btnDROP)
+        Me.GroupBoxTables.Controls.Add(Me.btnCREATE)
         Me.GroupBoxTables.Controls.Add(Me.btnINSERT)
-        Me.GroupBoxTables.Controls.Add(Me.btnTable)
         Me.GroupBoxTables.Controls.Add(Me.btnDelete)
         Me.GroupBoxTables.Controls.Add(Me.btnSelect)
-        Me.GroupBoxTables.Controls.Add(Me.lblInsert)
         Me.GroupBoxTables.Controls.Add(Me.btnUPDATE)
         Me.GroupBoxTables.Location = New System.Drawing.Point(8, 13)
         Me.GroupBoxTables.Name = "GroupBoxTables"
-        Me.GroupBoxTables.Size = New System.Drawing.Size(366, 31)
+        Me.GroupBoxTables.Size = New System.Drawing.Size(430, 31)
         Me.GroupBoxTables.TabIndex = 86
         Me.GroupBoxTables.TabStop = False
         Me.GroupBoxTables.Visible = False
         '
+        'btnALTER
+        '
+        Me.btnALTER.Location = New System.Drawing.Point(302, 7)
+        Me.btnALTER.Name = "btnALTER"
+        Me.btnALTER.Size = New System.Drawing.Size(60, 24)
+        Me.btnALTER.TabIndex = 84
+        Me.btnALTER.Text = "ALTER"
+        Me.btnALTER.UseVisualStyleBackColor = True
+        '
+        'btnDROP
+        '
+        Me.btnDROP.Location = New System.Drawing.Point(362, 7)
+        Me.btnDROP.Name = "btnDROP"
+        Me.btnDROP.Size = New System.Drawing.Size(60, 24)
+        Me.btnDROP.TabIndex = 83
+        Me.btnDROP.Text = "DROP"
+        Me.btnDROP.UseVisualStyleBackColor = True
+        '
+        'btnCREATE
+        '
+        Me.btnCREATE.Location = New System.Drawing.Point(241, 7)
+        Me.btnCREATE.Name = "btnCREATE"
+        Me.btnCREATE.Size = New System.Drawing.Size(60, 24)
+        Me.btnCREATE.TabIndex = 82
+        Me.btnCREATE.Text = "CREATE"
+        Me.btnCREATE.UseVisualStyleBackColor = True
+        '
         'btnINSERT
         '
-        Me.btnINSERT.Location = New System.Drawing.Point(153, 7)
+        Me.btnINSERT.Location = New System.Drawing.Point(60, 7)
         Me.btnINSERT.Name = "btnINSERT"
         Me.btnINSERT.Size = New System.Drawing.Size(58, 24)
         Me.btnINSERT.TabIndex = 78
         Me.btnINSERT.Text = "INSERT"
         Me.btnINSERT.UseVisualStyleBackColor = True
         '
-        'btnTable
-        '
-        Me.btnTable.Location = New System.Drawing.Point(47, 7)
-        Me.btnTable.Name = "btnTable"
-        Me.btnTable.Size = New System.Drawing.Size(44, 25)
-        Me.btnTable.TabIndex = 70
-        Me.btnTable.Text = "Table"
-        Me.btnTable.UseVisualStyleBackColor = True
-        '
         'btnDelete
         '
-        Me.btnDelete.Location = New System.Drawing.Point(274, 7)
+        Me.btnDelete.Location = New System.Drawing.Point(181, 7)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Size = New System.Drawing.Size(60, 24)
         Me.btnDelete.TabIndex = 81
@@ -248,96 +270,27 @@ Partial Class frmSQL
         '
         'btnSelect
         '
-        Me.btnSelect.Location = New System.Drawing.Point(93, 7)
+        Me.btnSelect.Location = New System.Drawing.Point(0, 7)
         Me.btnSelect.Name = "btnSelect"
         Me.btnSelect.Size = New System.Drawing.Size(58, 24)
         Me.btnSelect.TabIndex = 75
         Me.btnSelect.Text = "SELECT"
         Me.btnSelect.UseVisualStyleBackColor = True
         '
-        'lblInsert
-        '
-        Me.lblInsert.AutoSize = True
-        Me.lblInsert.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblInsert.Location = New System.Drawing.Point(-2, 11)
-        Me.lblInsert.Name = "lblInsert"
-        Me.lblInsert.Size = New System.Drawing.Size(51, 16)
-        Me.lblInsert.TabIndex = 80
-        Me.lblInsert.Text = "Insert->"
-        '
         'btnUPDATE
         '
-        Me.btnUPDATE.Location = New System.Drawing.Point(213, 7)
+        Me.btnUPDATE.Location = New System.Drawing.Point(120, 7)
         Me.btnUPDATE.Name = "btnUPDATE"
         Me.btnUPDATE.Size = New System.Drawing.Size(60, 24)
         Me.btnUPDATE.TabIndex = 79
         Me.btnUPDATE.Text = "UPDATE"
         Me.btnUPDATE.UseVisualStyleBackColor = True
         '
-        'GroupBoxColumn
-        '
-        Me.GroupBoxColumn.Controls.Add(Me.lblSelect2)
-        Me.GroupBoxColumn.Controls.Add(Me.btnINSERTColumn)
-        Me.GroupBoxColumn.Controls.Add(Me.btnUPDATEColumn)
-        Me.GroupBoxColumn.Controls.Add(Me.lblProgress)
-        Me.GroupBoxColumn.Controls.Add(Me.btnColumn)
-        Me.GroupBoxColumn.Controls.Add(Me.btnSelectOneColumn)
-        Me.GroupBoxColumn.Location = New System.Drawing.Point(399, 13)
-        Me.GroupBoxColumn.Name = "GroupBoxColumn"
-        Me.GroupBoxColumn.Size = New System.Drawing.Size(336, 31)
-        Me.GroupBoxColumn.TabIndex = 85
-        Me.GroupBoxColumn.TabStop = False
-        Me.GroupBoxColumn.Visible = False
-        '
-        'lblSelect2
-        '
-        Me.lblSelect2.AutoSize = True
-        Me.lblSelect2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSelect2.Location = New System.Drawing.Point(-3, 10)
-        Me.lblSelect2.Name = "lblSelect2"
-        Me.lblSelect2.Size = New System.Drawing.Size(51, 16)
-        Me.lblSelect2.TabIndex = 82
-        Me.lblSelect2.Text = "Insert->"
-        '
-        'btnINSERTColumn
-        '
-        Me.btnINSERTColumn.Location = New System.Drawing.Point(160, 7)
-        Me.btnINSERTColumn.Name = "btnINSERTColumn"
-        Me.btnINSERTColumn.Size = New System.Drawing.Size(57, 24)
-        Me.btnINSERTColumn.TabIndex = 84
-        Me.btnINSERTColumn.Text = "INSERT"
-        Me.btnINSERTColumn.UseVisualStyleBackColor = True
-        '
-        'btnUPDATEColumn
-        '
-        Me.btnUPDATEColumn.Location = New System.Drawing.Point(220, 7)
-        Me.btnUPDATEColumn.Name = "btnUPDATEColumn"
-        Me.btnUPDATEColumn.Size = New System.Drawing.Size(59, 24)
-        Me.btnUPDATEColumn.TabIndex = 83
-        Me.btnUPDATEColumn.Text = "UPDATE"
-        Me.btnUPDATEColumn.UseVisualStyleBackColor = True
-        '
-        'btnColumn
-        '
-        Me.btnColumn.Location = New System.Drawing.Point(50, 6)
-        Me.btnColumn.Name = "btnColumn"
-        Me.btnColumn.Size = New System.Drawing.Size(50, 25)
-        Me.btnColumn.TabIndex = 71
-        Me.btnColumn.Text = "Column"
-        Me.btnColumn.UseVisualStyleBackColor = True
-        '
-        'btnSelectOneColumn
-        '
-        Me.btnSelectOneColumn.Location = New System.Drawing.Point(103, 7)
-        Me.btnSelectOneColumn.Name = "btnSelectOneColumn"
-        Me.btnSelectOneColumn.Size = New System.Drawing.Size(56, 24)
-        Me.btnSelectOneColumn.TabIndex = 76
-        Me.btnSelectOneColumn.Text = "SELECT"
-        Me.btnSelectOneColumn.UseVisualStyleBackColor = True
-        '
         'chkWrap
         '
         Me.chkWrap.AutoSize = True
+        Me.chkWrap.Checked = True
+        Me.chkWrap.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkWrap.Location = New System.Drawing.Point(13, 524)
         Me.chkWrap.Name = "chkWrap"
         Me.chkWrap.Size = New System.Drawing.Size(81, 17)
@@ -377,10 +330,9 @@ Partial Class frmSQL
         Me.txtSQL.Multiline = True
         Me.txtSQL.Name = "txtSQL"
         Me.txtSQL.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtSQL.Size = New System.Drawing.Size(987, 359)
+        Me.txtSQL.Size = New System.Drawing.Size(1013, 359)
         Me.txtSQL.TabIndex = 0
         Me.ToolTip1.SetToolTip(Me.txtSQL, "Type your SQL statement here")
-        Me.txtSQL.WordWrap = False
         '
         'btnText
         '
@@ -396,18 +348,9 @@ Partial Class frmSQL
         Me.cmbTables.FormattingEnabled = True
         Me.cmbTables.Location = New System.Drawing.Point(5, 46)
         Me.cmbTables.Name = "cmbTables"
-        Me.cmbTables.Size = New System.Drawing.Size(371, 21)
+        Me.cmbTables.Size = New System.Drawing.Size(425, 21)
         Me.cmbTables.TabIndex = 61
         Me.cmbTables.Text = "Please choose a table"
-        '
-        'cmbFields
-        '
-        Me.cmbFields.FormattingEnabled = True
-        Me.cmbFields.Location = New System.Drawing.Point(393, 46)
-        Me.cmbFields.Name = "cmbFields"
-        Me.cmbFields.Size = New System.Drawing.Size(354, 21)
-        Me.cmbFields.TabIndex = 63
-        Me.cmbFields.Text = "Please choose a table first"
         '
         'btnTime
         '
@@ -424,7 +367,7 @@ Partial Class frmSQL
         Me.dateForm.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.dateForm.Location = New System.Drawing.Point(5, 109)
         Me.dateForm.Name = "dateForm"
-        Me.dateForm.Size = New System.Drawing.Size(91, 20)
+        Me.dateForm.Size = New System.Drawing.Size(101, 20)
         Me.dateForm.TabIndex = 64
         '
         'TimeForm
@@ -487,15 +430,10 @@ Partial Class frmSQL
         Me.gbSQL.ResumeLayout(False)
         Me.gbSQL.PerformLayout()
         Me.GroupBoxTables.ResumeLayout(False)
-        Me.GroupBoxTables.PerformLayout()
-        Me.GroupBoxColumn.ResumeLayout(False)
-        Me.GroupBoxColumn.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents lblProgress As Label
     Friend WithEvents ckbDetectProxy As CheckBox
     Friend WithEvents lblAppToken As Label
     Friend WithEvents txtAppToken As TextBox
@@ -515,9 +453,6 @@ Partial Class frmSQL
     Friend WithEvents txtSQL As TextBox
     Friend WithEvents btnText As Button
     Friend WithEvents cmbTables As ComboBox
-    Friend WithEvents btnColumn As Button
-    Friend WithEvents btnTable As Button
-    Friend WithEvents cmbFields As ComboBox
     Friend WithEvents btnTime As Button
     Friend WithEvents dateForm As DateTimePicker
     Friend WithEvents TimeForm As DateTimePicker
@@ -525,16 +460,15 @@ Partial Class frmSQL
     Friend WithEvents btnDateTime As Button
     Friend WithEvents DateTimeForm As DateTimePicker
     Friend WithEvents btnSelect As Button
-    Friend WithEvents btnSelectOneColumn As Button
     Friend WithEvents chkWrap As CheckBox
     Friend WithEvents btnINSERT As Button
     Friend WithEvents btnUPDATE As Button
     Friend WithEvents btnDelete As Button
-    Friend WithEvents lblInsert As Label
-    Friend WithEvents btnUPDATEColumn As Button
-    Friend WithEvents lblSelect2 As Label
-    Friend WithEvents btnINSERTColumn As Button
     Friend WithEvents GroupBoxTables As GroupBox
-    Friend WithEvents GroupBoxColumn As GroupBox
     Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents ListBoxColumns As ListBox
+    Friend WithEvents cmbCatalogs As ComboBox
+    Friend WithEvents btnALTER As Button
+    Friend WithEvents btnDROP As Button
+    Friend WithEvents btnCREATE As Button
 End Class
