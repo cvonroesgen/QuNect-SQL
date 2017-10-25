@@ -57,7 +57,7 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.13" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.16" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
         txtServer.Text = GetSetting(AppName, "Credentials", "server", "www.quickbase.com")
@@ -66,14 +66,14 @@ Public Class frmSQL
         txtSQL.SelectionStart = CInt(GetSetting(AppName, "SQL", "selectionStart", "0"))
         txtSQL.SelectionLength = CInt(GetSetting(AppName, "SQL", "selectionLength", "0"))
         Dim detectProxySetting As String = GetSetting(AppName, "Credentials", "detectproxysettings", "0")
-        cmbDSN.Text = GetSetting(AppName, "Connection", "DSN", "")
         If detectProxySetting = "1" Then
             ckbDetectProxy.Checked = True
         Else
             ckbDetectProxy.Checked = False
         End If
-
+        Dim dsn As String = GetSetting(AppName, "Connection", "DSN", "")
         GetDSNs()
+        cmbDSN.SelectedIndex = cmbDSN.FindStringExact(dsn)
         Me.Show()
         txtSQL.Focus()
     End Sub
