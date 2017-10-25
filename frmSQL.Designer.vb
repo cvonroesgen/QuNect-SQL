@@ -23,6 +23,7 @@ Partial Class frmSQL
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSQL))
         Me.ckbDetectProxy = New System.Windows.Forms.CheckBox()
         Me.lblAppToken = New System.Windows.Forms.Label()
         Me.txtAppToken = New System.Windows.Forms.TextBox()
@@ -36,6 +37,7 @@ Partial Class frmSQL
         Me.lblDSN = New System.Windows.Forms.Label()
         Me.btnConnect = New System.Windows.Forms.Button()
         Me.gbSQL = New System.Windows.Forms.GroupBox()
+        Me.btnFields = New System.Windows.Forms.Button()
         Me.cmbCatalogs = New System.Windows.Forms.ComboBox()
         Me.ListBoxColumns = New System.Windows.Forms.ListBox()
         Me.GroupBoxTables = New System.Windows.Forms.GroupBox()
@@ -167,6 +169,7 @@ Partial Class frmSQL
         '
         'gbSQL
         '
+        Me.gbSQL.Controls.Add(Me.btnFields)
         Me.gbSQL.Controls.Add(Me.cmbCatalogs)
         Me.gbSQL.Controls.Add(Me.ListBoxColumns)
         Me.gbSQL.Controls.Add(Me.GroupBoxTables)
@@ -190,21 +193,31 @@ Partial Class frmSQL
         Me.gbSQL.TabStop = False
         Me.gbSQL.Visible = False
         '
+        'btnFields
+        '
+        Me.btnFields.Location = New System.Drawing.Point(643, 18)
+        Me.btnFields.Name = "btnFields"
+        Me.btnFields.Size = New System.Drawing.Size(103, 22)
+        Me.btnFields.TabIndex = 90
+        Me.btnFields.Text = "Insert Fields"
+        Me.btnFields.UseVisualStyleBackColor = True
+        Me.btnFields.Visible = False
+        '
         'cmbCatalogs
         '
         Me.cmbCatalogs.FormattingEnabled = True
         Me.cmbCatalogs.Location = New System.Drawing.Point(436, 46)
         Me.cmbCatalogs.Name = "cmbCatalogs"
-        Me.cmbCatalogs.Size = New System.Drawing.Size(337, 21)
+        Me.cmbCatalogs.Size = New System.Drawing.Size(310, 21)
         Me.cmbCatalogs.TabIndex = 89
         '
         'ListBoxColumns
         '
         Me.ListBoxColumns.FormattingEnabled = True
-        Me.ListBoxColumns.Location = New System.Drawing.Point(779, 8)
+        Me.ListBoxColumns.Location = New System.Drawing.Point(752, 8)
         Me.ListBoxColumns.Name = "ListBoxColumns"
         Me.ListBoxColumns.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.ListBoxColumns.Size = New System.Drawing.Size(245, 134)
+        Me.ListBoxColumns.Size = New System.Drawing.Size(272, 134)
         Me.ListBoxColumns.TabIndex = 88
         '
         'GroupBoxTables
@@ -320,7 +333,7 @@ Partial Class frmSQL
         '
         Me.txtText.Location = New System.Drawing.Point(394, 109)
         Me.txtText.Name = "txtText"
-        Me.txtText.Size = New System.Drawing.Size(353, 20)
+        Me.txtText.Size = New System.Drawing.Size(352, 20)
         Me.txtText.TabIndex = 73
         '
         'txtSQL
@@ -425,6 +438,7 @@ Partial Class frmSQL
         Me.Controls.Add(Me.txtPassword)
         Me.Controls.Add(Me.lblUsername)
         Me.Controls.Add(Me.txtUsername)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmSQL"
         Me.Text = "QuNect SQL"
         Me.gbSQL.ResumeLayout(False)
@@ -471,4 +485,5 @@ Partial Class frmSQL
     Friend WithEvents btnALTER As Button
     Friend WithEvents btnDROP As Button
     Friend WithEvents btnCREATE As Button
+    Friend WithEvents btnFields As Button
 End Class

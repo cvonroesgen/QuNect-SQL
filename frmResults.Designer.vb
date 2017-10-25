@@ -22,6 +22,7 @@ Partial Class frmResults
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmResults))
         Me.dgvSQL = New System.Windows.Forms.DataGridView()
         CType(Me.dgvSQL, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -40,6 +41,7 @@ Partial Class frmResults
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1025, 734)
         Me.Controls.Add(Me.dgvSQL)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmResults"
         Me.Text = "QuNect SQL Results"
         CType(Me.dgvSQL, System.ComponentModel.ISupportInitialize).EndInit()

@@ -57,7 +57,7 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.12" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.13" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
         txtServer.Text = GetSetting(AppName, "Credentials", "server", "www.quickbase.com")
@@ -66,6 +66,7 @@ Public Class frmSQL
         txtSQL.SelectionStart = CInt(GetSetting(AppName, "SQL", "selectionStart", "0"))
         txtSQL.SelectionLength = CInt(GetSetting(AppName, "SQL", "selectionLength", "0"))
         Dim detectProxySetting As String = GetSetting(AppName, "Credentials", "detectproxysettings", "0")
+        cmbDSN.Text = GetSetting(AppName, "Connection", "DSN", "")
         If detectProxySetting = "1" Then
             ckbDetectProxy.Checked = True
         Else
@@ -167,7 +168,7 @@ Public Class frmSQL
         qdbVer.year = CInt(m.Groups(1).Value)
         qdbVer.major = CInt(m.Groups(2).Value)
         qdbVer.minor = CInt(m.Groups(3).Value)
-        If (qdbVer.major < 6) Or (qdbVer.major = 6 And qdbVer.minor < 84) Then
+        If (qdbVer.major < 7) Or (qdbVer.major = 7 And qdbVer.minor < 10) Then
             MsgBox("You are running the " & ver & " version of QuNect ODBC for QuickBase. Please install the latest version from http://qunect.com/download/QuNect.exe")
             quNectConn.Close()
             Me.Cursor = Cursors.Default
@@ -208,7 +209,9 @@ Public Class frmSQL
     Private Sub txtSQL_TextChanged(sender As Object, e As EventArgs) Handles txtSQL.TextChanged
         SaveSetting(AppName, "SQL", "sql", txtSQL.Text)
     End Sub
-
+    Private Sub cmbDSN_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbDSN.SelectedIndexChanged
+        SaveSetting(AppName, "Connection", "DSN", cmbDSN.Text)
+    End Sub
 
     Private Sub frmSQL_Activated(sender As Object, e As EventArgs) Handles Me.Activated
         txtSQL.Focus()
@@ -301,6 +304,7 @@ Public Class frmSQL
             Exit Sub
         End If
         Me.Cursor = Cursors.WaitCursor
+        btnFields.Visible = True
         ListBoxColumns.Items.Clear()
         Dim restrictions(2) As String
         restrictions(2) = cmbTables.SelectedItem.ToString()
@@ -461,5 +465,7 @@ Public Class frmSQL
         Dim sql As String = "ALTER TABLE """ & cmbTables.Text & """ ADD " & createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, True)
         insertReplaceText(txtSQL, sql)
     End Sub
+
+
 End Class
 
