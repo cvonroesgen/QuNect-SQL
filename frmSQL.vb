@@ -57,12 +57,12 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.16" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.21" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
         txtServer.Text = GetSetting(AppName, "Credentials", "server", "www.quickbase.com")
         txtAppToken.Text = GetSetting(AppName, "Credentials", "apptoken", "b2fr52jcykx3tnbwj8s74b8ed55b")
-        txtSQL.Text = GetSetting(AppName, "SQL", "sql", "select * from ")
+        txtSQL.Text = GetSetting(AppName, "SQL", "sql", "")
         txtSQL.SelectionStart = CInt(GetSetting(AppName, "SQL", "selectionStart", "0"))
         txtSQL.SelectionLength = CInt(GetSetting(AppName, "SQL", "selectionLength", "0"))
         Dim detectProxySetting As String = GetSetting(AppName, "Credentials", "detectproxysettings", "0")
@@ -202,8 +202,8 @@ Public Class frmSQL
     End Sub
 
     Private Sub txtSQL_GotFocus(sender As Object, e As EventArgs) Handles txtSQL.GotFocus
-        txtSQL.SelectionStart = CInt(GetSetting(AppName, "SQL", "selectionStart", ""))
-        txtSQL.SelectionLength = CInt(GetSetting(AppName, "SQL", "selectionLength", ""))
+        txtSQL.SelectionStart = CInt(GetSetting(AppName, "SQL", "selectionStart", "0"))
+        txtSQL.SelectionLength = CInt(GetSetting(AppName, "SQL", "selectionLength", "0"))
     End Sub
 
     Private Sub txtSQL_TextChanged(sender As Object, e As EventArgs) Handles txtSQL.TextChanged
@@ -261,7 +261,7 @@ Public Class frmSQL
         End If
         Me.Cursor = Cursors.WaitCursor
         Try
-        Dim connectionString As String = buildConnectionString()
+            Dim connectionString As String = buildConnectionString()
             connection = getquNectConn(connectionString)
             If connection Is Nothing Then Exit Sub
             'need to get a list of tables
@@ -466,6 +466,8 @@ Public Class frmSQL
         insertReplaceText(txtSQL, sql)
     End Sub
 
-
+    Private Sub btnFields_Click(sender As Object, e As EventArgs) Handles btnFields.Click
+        insertReplaceText(txtSQL, createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, False))
+    End Sub
 End Class
 
