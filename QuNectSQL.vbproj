@@ -25,12 +25,12 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://www.qunectllc.com/download/QuNectSQL/</InstallUrl>
+    <InstallUrl>https://www.qunect.com/download/QuNectSQL/</InstallUrl>
     <SupportUrl>http://www.qunect.com</SupportUrl>
     <ErrorReportUrl>http://www.qunect.com</ErrorReportUrl>
     <ProductName>QuNect SQL</ProductName>
     <PublisherName>QuNect</PublisherName>
-    <ApplicationRevision>21</ApplicationRevision>
+    <ApplicationRevision>23</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -105,7 +105,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>85003B1A0BC0DC43B20B71903F37587C5617EA33</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>10501FD56F3DEA5577ECABBFEF28D8E9C79574DB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>

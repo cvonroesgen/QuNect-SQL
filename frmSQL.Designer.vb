@@ -29,7 +29,6 @@ Partial Class frmSQL
         Me.txtAppToken = New System.Windows.Forms.TextBox()
         Me.lblServer = New System.Windows.Forms.Label()
         Me.txtServer = New System.Windows.Forms.TextBox()
-        Me.lblPassword = New System.Windows.Forms.Label()
         Me.txtPassword = New System.Windows.Forms.TextBox()
         Me.lblUsername = New System.Windows.Forms.Label()
         Me.txtUsername = New System.Windows.Forms.TextBox()
@@ -62,6 +61,7 @@ Partial Class frmSQL
         Me.btnDateTime = New System.Windows.Forms.Button()
         Me.DateTimeForm = New System.Windows.Forms.DateTimePicker()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.cmbPassword = New System.Windows.Forms.ComboBox()
         Me.gbSQL.SuspendLayout()
         Me.GroupBoxTables.SuspendLayout()
         Me.SuspendLayout()
@@ -95,7 +95,7 @@ Partial Class frmSQL
         'lblServer
         '
         Me.lblServer.AutoSize = True
-        Me.lblServer.Location = New System.Drawing.Point(287, 18)
+        Me.lblServer.Location = New System.Drawing.Point(306, 18)
         Me.lblServer.Name = "lblServer"
         Me.lblServer.Size = New System.Drawing.Size(93, 13)
         Me.lblServer.TabIndex = 48
@@ -103,26 +103,17 @@ Partial Class frmSQL
         '
         'txtServer
         '
-        Me.txtServer.Location = New System.Drawing.Point(284, 37)
+        Me.txtServer.Location = New System.Drawing.Point(309, 37)
         Me.txtServer.Name = "txtServer"
-        Me.txtServer.Size = New System.Drawing.Size(237, 20)
+        Me.txtServer.Size = New System.Drawing.Size(212, 20)
         Me.txtServer.TabIndex = 47
-        '
-        'lblPassword
-        '
-        Me.lblPassword.AutoSize = True
-        Me.lblPassword.Location = New System.Drawing.Point(151, 18)
-        Me.lblPassword.Name = "lblPassword"
-        Me.lblPassword.Size = New System.Drawing.Size(108, 13)
-        Me.lblPassword.TabIndex = 46
-        Me.lblPassword.Text = "QuickBase Password"
         '
         'txtPassword
         '
         Me.txtPassword.Location = New System.Drawing.Point(148, 37)
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.txtPassword.Size = New System.Drawing.Size(120, 20)
+        Me.txtPassword.Size = New System.Drawing.Size(140, 20)
         Me.txtPassword.TabIndex = 45
         '
         'lblUsername
@@ -420,11 +411,22 @@ Partial Class frmSQL
         Me.DateTimeForm.Size = New System.Drawing.Size(166, 20)
         Me.DateTimeForm.TabIndex = 66
         '
+        'cmbPassword
+        '
+        Me.cmbPassword.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbPassword.FormattingEnabled = True
+        Me.cmbPassword.Items.AddRange(New Object() {"Please choose...", "QuickBase Password", "QuickBase User Token"})
+        Me.cmbPassword.Location = New System.Drawing.Point(147, 12)
+        Me.cmbPassword.Name = "cmbPassword"
+        Me.cmbPassword.Size = New System.Drawing.Size(141, 21)
+        Me.cmbPassword.TabIndex = 76
+        '
         'frmSQL
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1076, 706)
+        Me.Controls.Add(Me.cmbPassword)
         Me.Controls.Add(Me.gbSQL)
         Me.Controls.Add(Me.btnConnect)
         Me.Controls.Add(Me.lblDSN)
@@ -434,7 +436,6 @@ Partial Class frmSQL
         Me.Controls.Add(Me.txtAppToken)
         Me.Controls.Add(Me.lblServer)
         Me.Controls.Add(Me.txtServer)
-        Me.Controls.Add(Me.lblPassword)
         Me.Controls.Add(Me.txtPassword)
         Me.Controls.Add(Me.lblUsername)
         Me.Controls.Add(Me.txtUsername)
@@ -453,7 +454,6 @@ Partial Class frmSQL
     Friend WithEvents txtAppToken As TextBox
     Friend WithEvents lblServer As Label
     Friend WithEvents txtServer As TextBox
-    Friend WithEvents lblPassword As Label
     Friend WithEvents txtPassword As TextBox
     Friend WithEvents lblUsername As Label
     Friend WithEvents txtUsername As TextBox
@@ -486,4 +486,5 @@ Partial Class frmSQL
     Friend WithEvents btnDROP As Button
     Friend WithEvents btnCREATE As Button
     Friend WithEvents btnFields As Button
+    Friend WithEvents cmbPassword As ComboBox
 End Class

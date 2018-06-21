@@ -57,11 +57,12 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.21" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.22" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
+        cmbPassword.SelectedIndex = CInt(GetSetting(AppName, "Credentials", "passwordOrToken", "0"))
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
         txtServer.Text = GetSetting(AppName, "Credentials", "server", "www.quickbase.com")
-        txtAppToken.Text = GetSetting(AppName, "Credentials", "apptoken", "b2fr52jcykx3tnbwj8s74b8ed55b")
+        txtAppToken.Text = GetSetting(AppName, "Credentials", "apptoken", "")
         txtSQL.Text = GetSetting(AppName, "SQL", "sql", "")
         txtSQL.SelectionStart = CInt(GetSetting(AppName, "SQL", "selectionStart", "0"))
         txtSQL.SelectionLength = CInt(GetSetting(AppName, "SQL", "selectionLength", "0"))
@@ -79,7 +80,17 @@ Public Class frmSQL
     End Sub
     Private Function buildConnectionString() As String
         If cmbDSN.SelectedIndex = 0 Then
-            Return "Driver={QuNect ODBC For QuickBase};uid=" & txtUsername.Text & ";pwd=" & txtPassword.Text & ";QUICKBASESERVER=" & txtServer.Text & ";APPTOKEN=" & txtAppToken.Text
+            Dim connectionString As String = ""
+            If cmbPassword.SelectedIndex = 0 Then
+                cmbPassword.Focus()
+                Throw New System.Exception("Please indicate whether you are using a password or a user token.")
+                Return ""
+            ElseIf cmbPassword.SelectedIndex = 1 Then
+                connectionString = ";PWDISPASSWORD=1"
+            Else
+                connectionString = ";PWDISPASSWORD=0"
+            End If
+            Return "Driver={QuNect ODBC For QuickBase};uid=" & txtUsername.Text & ";pwd=" & txtPassword.Text & ";QUICKBASESERVER=" & txtServer.Text & ";APPTOKEN=" & txtAppToken.Text & connectionString
         Else
             Return "DSN=" & cmbDSN.Text
         End If
@@ -468,6 +479,14 @@ Public Class frmSQL
 
     Private Sub btnFields_Click(sender As Object, e As EventArgs) Handles btnFields.Click
         insertReplaceText(txtSQL, createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, False))
+    End Sub
+    Private Sub cmbPassword_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPassword.SelectedIndexChanged
+        SaveSetting(AppName, "Credentials", "passwordOrToken", cmbPassword.SelectedIndex)
+        If cmbPassword.SelectedIndex = 0 Then
+            txtPassword.Enabled = False
+        Else
+            txtPassword.Enabled = True
+        End If
     End Sub
 End Class
 
