@@ -57,7 +57,7 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.22" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.25" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         cmbPassword.SelectedIndex = CInt(GetSetting(AppName, "Credentials", "passwordOrToken", "0"))
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
@@ -112,7 +112,7 @@ Public Class frmSQL
                 If checkOnly Then
                     Adpt.Dispose()
                     Me.Cursor = Cursors.Default
-                    MsgBox("Syntax OK!")
+                    MsgBox("Syntax OK!", MsgBoxStyle.OkOnly, AppName)
                     txtSQL.Focus()
                     Exit Sub
                 End If
@@ -126,7 +126,7 @@ Public Class frmSQL
                         command.Prepare()
                         command.Dispose()
                         Me.Cursor = Cursors.Default
-                        MsgBox("Syntax OK!")
+                        MsgBox("Syntax OK!", MsgBoxStyle.OkOnly, AppName)
                         txtSQL.Focus()
                         Exit Sub
                     End If
@@ -144,13 +144,13 @@ Public Class frmSQL
                     End If
                     Dim msg As String = i & " records were " & verb & "."
                     If i = -1 Then msg = "Success!"
-                    MsgBox(msg)
+                    MsgBox(msg, MsgBoxStyle.OkOnly, AppName)
                 End Using
                 txtSQL.Focus()
             End If
         Catch excpt As Exception
             txtSQL.Focus()
-            MsgBox(excpt.Message)
+            MsgBox(excpt.Message, MsgBoxStyle.OkOnly, AppName)
         End Try
         Me.Cursor = Cursors.Default
     End Sub
@@ -166,9 +166,9 @@ Public Class frmSQL
         Catch excpt As Exception
             Me.Cursor = Cursors.Default
             If excpt.Message.StartsWith("Error [IM003]") Or excpt.Message.Contains("Data source name Not found") Then
-                MsgBox("Please install QuNect ODBC For QuickBase from http://qunect.com/download/QuNect.exe and try again.")
+                MsgBox("Please install QuNect ODBC For QuickBase from http://qunect.com/download/QuNect.exe and try again.", MsgBoxStyle.OkOnly, AppName)
             Else
-                MsgBox(excpt.Message.Substring(13))
+                MsgBox(excpt.Message.Substring(13), MsgBoxStyle.OkOnly, AppName)
             End If
             Return Nothing
             Exit Function
@@ -180,7 +180,7 @@ Public Class frmSQL
         qdbVer.major = CInt(m.Groups(2).Value)
         qdbVer.minor = CInt(m.Groups(3).Value)
         If (qdbVer.major < 7) Or (qdbVer.major = 7 And qdbVer.minor < 10) Then
-            MsgBox("You are running the " & ver & " version of QuNect ODBC for QuickBase. Please install the latest version from http://qunect.com/download/QuNect.exe")
+            MsgBox("You are running the " & ver & " version of QuNect ODBC for QuickBase. Please install the latest version from http://qunect.com/download/QuNect.exe", MsgBoxStyle.OkOnly, AppName)
             quNectConn.Close()
             Me.Cursor = Cursors.Default
             Return Nothing
@@ -222,6 +222,7 @@ Public Class frmSQL
     End Sub
     Private Sub cmbDSN_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbDSN.SelectedIndexChanged
         SaveSetting(AppName, "Connection", "DSN", cmbDSN.Text)
+        cmbDSN_TextChanged(sender, e)
     End Sub
 
     Private Sub frmSQL_Activated(sender As Object, e As EventArgs) Handles Me.Activated
@@ -250,12 +251,14 @@ Public Class frmSQL
 
     Private Sub cmbDSN_TextChanged(sender As Object, e As EventArgs) Handles cmbDSN.TextChanged
         If cmbDSN.SelectedIndex = 0 Then
+            cmbPassword.Enabled = True
             txtPassword.Enabled = True
             txtUsername.Enabled = True
             txtAppToken.Enabled = True
             txtServer.Enabled = True
             ckbDetectProxy.Enabled = True
         Else
+            cmbPassword.Enabled = False
             txtPassword.Enabled = False
             txtUsername.Enabled = False
             txtAppToken.Enabled = False
@@ -296,7 +299,8 @@ Public Class frmSQL
             showSQLControls(True)
             txtSQL.Focus()
         Catch ex As Exception
-            MsgBox(ex.Message)
+            showSQLControls(False)
+            MsgBox(ex.Message, MsgBoxStyle.OkOnly, AppName)
         End Try
         Me.Cursor = Cursors.Default
     End Sub
