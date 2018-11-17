@@ -57,7 +57,7 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.25" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.27" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         cmbPassword.SelectedIndex = CInt(GetSetting(AppName, "Credentials", "passwordOrToken", "0"))
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
@@ -120,6 +120,7 @@ Public Class frmSQL
                 frmResults.dgvSQL.DataSource = ds.Tables(0)
                 frmResults.Text = Sql
                 frmResults.Show()
+                frmResults.TopMost = True
             Else
                 Using command As OdbcCommand = New OdbcCommand(Sql, connection)
                     If checkOnly Then

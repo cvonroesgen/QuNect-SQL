@@ -6,12 +6,9 @@
             'i = frmSQL.Adpt.Update(frmSQL.ds)
             'MsgBox("Records Updated= " & i)
         Catch ex As Exception
-            MsgBox(ex.Message)
+            MsgBox(ex.Message, MsgBoxStyle.OkOnly, "QuNect SQL")
         End Try
     End Sub
 
-    Private Sub frmResults_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
-        dgvSQL.Width = Me.ClientSize.Width
-        dgvSQL.Height = Me.ClientSize.Height
-    End Sub
+
 End Class

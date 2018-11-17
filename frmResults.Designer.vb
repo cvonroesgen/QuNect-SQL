@@ -30,9 +30,10 @@ Partial Class frmResults
         'dgvSQL
         '
         Me.dgvSQL.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvSQL.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvSQL.Location = New System.Drawing.Point(0, 0)
         Me.dgvSQL.Name = "dgvSQL"
-        Me.dgvSQL.Size = New System.Drawing.Size(1026, 733)
+        Me.dgvSQL.Size = New System.Drawing.Size(1025, 734)
         Me.dgvSQL.TabIndex = 0
         '
         'frmResults
