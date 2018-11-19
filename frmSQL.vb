@@ -57,11 +57,11 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.28" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.31" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         cmbPassword.SelectedIndex = CInt(GetSetting(AppName, "Credentials", "passwordOrToken", "0"))
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
-        txtServer.Text = GetSetting(AppName, "Credentials", "server", "www.quickbase.com")
+        txtServer.Text = GetSetting(AppName, "Credentials", "server", "")
         txtAppToken.Text = GetSetting(AppName, "Credentials", "apptoken", "")
         txtSQL.Text = GetSetting(AppName, "SQL", "sql", "")
         txtSQL.SelectionStart = CInt(GetSetting(AppName, "SQL", "selectionStart", "0"))
@@ -197,7 +197,8 @@ Public Class frmSQL
         lblServer.Visible = txtServer.Visible
         lblAppToken.Visible = cmbPassword.Visible And cmbPassword.SelectedIndex = 1
         txtAppToken.Visible = lblAppToken.Visible
-
+        btnAppToken.Visible = lblAppToken.Visible
+        btnUserToken.Visible = cmbPassword.Visible And cmbPassword.SelectedIndex = 2
     End Sub
     Private Sub txtAppToken_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtAppToken.TextChanged
         SaveSetting(AppName, "Credentials", "apptoken", txtAppToken.Text)
@@ -502,6 +503,13 @@ Public Class frmSQL
     Private Sub cmbPassword_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPassword.SelectedIndexChanged
         SaveSetting(AppName, "Credentials", "passwordOrToken", cmbPassword.SelectedIndex)
         showHideControls()
+    End Sub
+
+    Private Sub btnAppToken_Click(sender As Object, e As EventArgs) Handles btnAppToken.Click
+        Process.Start("https://qunect.com/flash/AppToken.html")
+    End Sub
+    Private Sub btnUserToken_Click(sender As Object, e As EventArgs) Handles btnUserToken.Click
+        Process.Start("https://qunect.com/flash/UserToken.html")
     End Sub
 End Class
 

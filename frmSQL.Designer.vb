@@ -62,6 +62,8 @@ Partial Class frmSQL
         Me.DateTimeForm = New System.Windows.Forms.DateTimePicker()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.cmbPassword = New System.Windows.Forms.ComboBox()
+        Me.btnAppToken = New System.Windows.Forms.Button()
+        Me.btnUserToken = New System.Windows.Forms.Button()
         Me.gbSQL.SuspendLayout()
         Me.GroupBoxTables.SuspendLayout()
         Me.SuspendLayout()
@@ -69,7 +71,7 @@ Partial Class frmSQL
         'ckbDetectProxy
         '
         Me.ckbDetectProxy.AutoSize = True
-        Me.ckbDetectProxy.Location = New System.Drawing.Point(541, 39)
+        Me.ckbDetectProxy.Location = New System.Drawing.Point(842, 39)
         Me.ckbDetectProxy.Name = "ckbDetectProxy"
         Me.ckbDetectProxy.Size = New System.Drawing.Size(188, 17)
         Me.ckbDetectProxy.TabIndex = 52
@@ -95,7 +97,7 @@ Partial Class frmSQL
         'lblServer
         '
         Me.lblServer.AutoSize = True
-        Me.lblServer.Location = New System.Drawing.Point(306, 18)
+        Me.lblServer.Location = New System.Drawing.Point(607, 18)
         Me.lblServer.Name = "lblServer"
         Me.lblServer.Size = New System.Drawing.Size(93, 13)
         Me.lblServer.TabIndex = 48
@@ -103,17 +105,17 @@ Partial Class frmSQL
         '
         'txtServer
         '
-        Me.txtServer.Location = New System.Drawing.Point(309, 37)
+        Me.txtServer.Location = New System.Drawing.Point(610, 37)
         Me.txtServer.Name = "txtServer"
         Me.txtServer.Size = New System.Drawing.Size(212, 20)
         Me.txtServer.TabIndex = 47
         '
         'txtPassword
         '
-        Me.txtPassword.Location = New System.Drawing.Point(148, 37)
+        Me.txtPassword.Location = New System.Drawing.Point(285, 35)
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.txtPassword.Size = New System.Drawing.Size(140, 20)
+        Me.txtPassword.Size = New System.Drawing.Size(276, 20)
         Me.txtPassword.TabIndex = 45
         '
         'lblUsername
@@ -127,9 +129,9 @@ Partial Class frmSQL
         '
         'txtUsername
         '
-        Me.txtUsername.Location = New System.Drawing.Point(10, 37)
+        Me.txtUsername.Location = New System.Drawing.Point(-1, 37)
         Me.txtUsername.Name = "txtUsername"
-        Me.txtUsername.Size = New System.Drawing.Size(120, 20)
+        Me.txtUsername.Size = New System.Drawing.Size(269, 20)
         Me.txtUsername.TabIndex = 43
         '
         'cmbDSN
@@ -416,16 +418,36 @@ Partial Class frmSQL
         Me.cmbPassword.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbPassword.FormattingEnabled = True
         Me.cmbPassword.Items.AddRange(New Object() {"Please choose...", "QuickBase Password", "QuickBase User Token"})
-        Me.cmbPassword.Location = New System.Drawing.Point(147, 12)
+        Me.cmbPassword.Location = New System.Drawing.Point(284, 10)
         Me.cmbPassword.Name = "cmbPassword"
-        Me.cmbPassword.Size = New System.Drawing.Size(141, 21)
+        Me.cmbPassword.Size = New System.Drawing.Size(277, 21)
         Me.cmbPassword.TabIndex = 76
+        '
+        'btnAppToken
+        '
+        Me.btnAppToken.Location = New System.Drawing.Point(160, 65)
+        Me.btnAppToken.Name = "btnAppToken"
+        Me.btnAppToken.Size = New System.Drawing.Size(19, 20)
+        Me.btnAppToken.TabIndex = 79
+        Me.btnAppToken.Text = "?"
+        Me.btnAppToken.UseVisualStyleBackColor = True
+        '
+        'btnUserToken
+        '
+        Me.btnUserToken.Location = New System.Drawing.Point(567, 11)
+        Me.btnUserToken.Name = "btnUserToken"
+        Me.btnUserToken.Size = New System.Drawing.Size(19, 20)
+        Me.btnUserToken.TabIndex = 80
+        Me.btnUserToken.Text = "?"
+        Me.btnUserToken.UseVisualStyleBackColor = True
         '
         'frmSQL
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1076, 706)
+        Me.Controls.Add(Me.btnUserToken)
+        Me.Controls.Add(Me.btnAppToken)
         Me.Controls.Add(Me.cmbPassword)
         Me.Controls.Add(Me.gbSQL)
         Me.Controls.Add(Me.btnConnect)
@@ -487,4 +509,6 @@ Partial Class frmSQL
     Friend WithEvents btnCREATE As Button
     Friend WithEvents btnFields As Button
     Friend WithEvents cmbPassword As ComboBox
+    Friend WithEvents btnAppToken As Button
+    Friend WithEvents btnUserToken As Button
 End Class
