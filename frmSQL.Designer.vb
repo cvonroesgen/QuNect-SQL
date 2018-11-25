@@ -36,6 +36,7 @@ Partial Class frmSQL
         Me.lblDSN = New System.Windows.Forms.Label()
         Me.btnConnect = New System.Windows.Forms.Button()
         Me.gbSQL = New System.Windows.Forms.GroupBox()
+        Me.lblElapsed = New System.Windows.Forms.Label()
         Me.btnFields = New System.Windows.Forms.Button()
         Me.cmbCatalogs = New System.Windows.Forms.ComboBox()
         Me.ListBoxColumns = New System.Windows.Forms.ListBox()
@@ -115,7 +116,7 @@ Partial Class frmSQL
         Me.txtPassword.Location = New System.Drawing.Point(285, 35)
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.txtPassword.Size = New System.Drawing.Size(276, 20)
+        Me.txtPassword.Size = New System.Drawing.Size(301, 20)
         Me.txtPassword.TabIndex = 45
         '
         'lblUsername
@@ -129,9 +130,9 @@ Partial Class frmSQL
         '
         'txtUsername
         '
-        Me.txtUsername.Location = New System.Drawing.Point(-1, 37)
+        Me.txtUsername.Location = New System.Drawing.Point(12, 37)
         Me.txtUsername.Name = "txtUsername"
-        Me.txtUsername.Size = New System.Drawing.Size(269, 20)
+        Me.txtUsername.Size = New System.Drawing.Size(256, 20)
         Me.txtUsername.TabIndex = 43
         '
         'cmbDSN
@@ -162,6 +163,7 @@ Partial Class frmSQL
         '
         'gbSQL
         '
+        Me.gbSQL.Controls.Add(Me.lblElapsed)
         Me.gbSQL.Controls.Add(Me.btnFields)
         Me.gbSQL.Controls.Add(Me.cmbCatalogs)
         Me.gbSQL.Controls.Add(Me.ListBoxColumns)
@@ -185,6 +187,14 @@ Partial Class frmSQL
         Me.gbSQL.TabIndex = 75
         Me.gbSQL.TabStop = False
         Me.gbSQL.Visible = False
+        '
+        'lblElapsed
+        '
+        Me.lblElapsed.AutoSize = True
+        Me.lblElapsed.Location = New System.Drawing.Point(492, 529)
+        Me.lblElapsed.Name = "lblElapsed"
+        Me.lblElapsed.Size = New System.Drawing.Size(0, 13)
+        Me.lblElapsed.TabIndex = 81
         '
         'btnFields
         '
@@ -418,9 +428,9 @@ Partial Class frmSQL
         Me.cmbPassword.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbPassword.FormattingEnabled = True
         Me.cmbPassword.Items.AddRange(New Object() {"Please choose...", "QuickBase Password", "QuickBase User Token"})
-        Me.cmbPassword.Location = New System.Drawing.Point(284, 10)
+        Me.cmbPassword.Location = New System.Drawing.Point(285, 10)
         Me.cmbPassword.Name = "cmbPassword"
-        Me.cmbPassword.Size = New System.Drawing.Size(277, 21)
+        Me.cmbPassword.Size = New System.Drawing.Size(276, 21)
         Me.cmbPassword.TabIndex = 76
         '
         'btnAppToken
@@ -434,7 +444,7 @@ Partial Class frmSQL
         '
         'btnUserToken
         '
-        Me.btnUserToken.Location = New System.Drawing.Point(567, 11)
+        Me.btnUserToken.Location = New System.Drawing.Point(565, 11)
         Me.btnUserToken.Name = "btnUserToken"
         Me.btnUserToken.Size = New System.Drawing.Size(19, 20)
         Me.btnUserToken.TabIndex = 80
@@ -511,4 +521,5 @@ Partial Class frmSQL
     Friend WithEvents cmbPassword As ComboBox
     Friend WithEvents btnAppToken As Button
     Friend WithEvents btnUserToken As Button
+    Friend WithEvents lblElapsed As Label
 End Class

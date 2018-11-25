@@ -57,7 +57,7 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.31" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.33" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         cmbPassword.SelectedIndex = CInt(GetSetting(AppName, "Credentials", "passwordOrToken", "0"))
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
@@ -100,6 +100,7 @@ Public Class frmSQL
         If CBool(txtSQL.SelectedText.Length) Then
             Sql = txtSQL.SelectedText
         End If
+        startStopElapsedTime(True)
         Me.Cursor = Cursors.WaitCursor
         Try
 
@@ -153,6 +154,7 @@ Public Class frmSQL
             txtSQL.Focus()
             MsgBox(excpt.Message, MsgBoxStyle.OkOnly, AppName)
         End Try
+        startStopElapsedTime(False)
         Me.Cursor = Cursors.Default
     End Sub
     Private Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
@@ -511,5 +513,22 @@ Public Class frmSQL
     Private Sub btnUserToken_Click(sender As Object, e As EventArgs) Handles btnUserToken.Click
         Process.Start("https://qunect.com/flash/UserToken.html")
     End Sub
+
+    Private Sub startStopElapsedTime(start As Boolean)
+        Static start_time As DateTime
+        Static stop_time As DateTime
+        Dim elapsed_time As TimeSpan
+
+        If start Then
+            lblElapsed.Text = ""
+            start_time = Now
+        Else
+            stop_time = Now
+            elapsed_time = stop_time.Subtract(start_time)
+            lblElapsed.Text = "Elapsed Time: " & elapsed_time.TotalSeconds.ToString("0.000000")
+        End If
+    End Sub
+
+
 End Class
 
