@@ -190,6 +190,7 @@ Partial Class frmSQL
         '
         'lblElapsed
         '
+        Me.lblElapsed.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.lblElapsed.AutoSize = True
         Me.lblElapsed.Location = New System.Drawing.Point(492, 529)
         Me.lblElapsed.Name = "lblElapsed"
@@ -304,6 +305,7 @@ Partial Class frmSQL
         '
         'chkWrap
         '
+        Me.chkWrap.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.chkWrap.AutoSize = True
         Me.chkWrap.Checked = True
         Me.chkWrap.CheckState = System.Windows.Forms.CheckState.Checked
@@ -316,6 +318,7 @@ Partial Class frmSQL
         '
         'btnGo
         '
+        Me.btnGo.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.btnGo.Location = New System.Drawing.Point(388, 524)
         Me.btnGo.Name = "btnGo"
         Me.btnGo.Size = New System.Drawing.Size(86, 22)
@@ -325,6 +328,7 @@ Partial Class frmSQL
         '
         'btnCheckSQL
         '
+        Me.btnCheckSQL.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.btnCheckSQL.Location = New System.Drawing.Point(255, 524)
         Me.btnCheckSQL.Name = "btnCheckSQL"
         Me.btnCheckSQL.Size = New System.Drawing.Size(119, 22)
@@ -341,6 +345,9 @@ Partial Class frmSQL
         '
         'txtSQL
         '
+        Me.txtSQL.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtSQL.Font = New System.Drawing.Font("Courier New", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSQL.Location = New System.Drawing.Point(11, 148)
         Me.txtSQL.Multiline = True

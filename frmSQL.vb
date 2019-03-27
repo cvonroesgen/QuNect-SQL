@@ -57,7 +57,7 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.34" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.35" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         cmbPassword.SelectedIndex = CInt(GetSetting(AppName, "Credentials", "passwordOrToken", "0"))
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
@@ -193,7 +193,9 @@ Public Class frmSQL
         Return quNectConn
     End Function
     Sub showHideControls()
-        cmbPassword.Visible = txtUsername.Text.Length > 0
+        txtUsername.Visible = cmbDSN.SelectedIndex = 0
+        lblUsername.Visible = txtUsername.Visible
+        cmbPassword.Visible = txtUsername.Visible And txtUsername.Text.Length > 0
         txtPassword.Visible = cmbPassword.Visible And cmbPassword.SelectedIndex <> 0
         txtServer.Visible = txtPassword.Visible And txtPassword.Text.Length > 0
         lblServer.Visible = txtServer.Visible
