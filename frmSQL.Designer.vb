@@ -163,6 +163,9 @@ Partial Class frmSQL
         '
         'gbSQL
         '
+        Me.gbSQL.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbSQL.Controls.Add(Me.lblElapsed)
         Me.gbSQL.Controls.Add(Me.btnFields)
         Me.gbSQL.Controls.Add(Me.cmbCatalogs)
