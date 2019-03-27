@@ -72,7 +72,7 @@ Partial Class frmSQL
         'ckbDetectProxy
         '
         Me.ckbDetectProxy.AutoSize = True
-        Me.ckbDetectProxy.Location = New System.Drawing.Point(842, 39)
+        Me.ckbDetectProxy.Location = New System.Drawing.Point(682, 84)
         Me.ckbDetectProxy.Name = "ckbDetectProxy"
         Me.ckbDetectProxy.Size = New System.Drawing.Size(188, 17)
         Me.ckbDetectProxy.TabIndex = 52
@@ -82,7 +82,7 @@ Partial Class frmSQL
         'lblAppToken
         '
         Me.lblAppToken.AutoSize = True
-        Me.lblAppToken.Location = New System.Drawing.Point(13, 71)
+        Me.lblAppToken.Location = New System.Drawing.Point(13, 64)
         Me.lblAppToken.Name = "lblAppToken"
         Me.lblAppToken.Size = New System.Drawing.Size(148, 13)
         Me.lblAppToken.TabIndex = 50
@@ -90,7 +90,7 @@ Partial Class frmSQL
         '
         'txtAppToken
         '
-        Me.txtAppToken.Location = New System.Drawing.Point(10, 90)
+        Me.txtAppToken.Location = New System.Drawing.Point(10, 83)
         Me.txtAppToken.Name = "txtAppToken"
         Me.txtAppToken.Size = New System.Drawing.Size(258, 20)
         Me.txtAppToken.TabIndex = 49
@@ -98,7 +98,7 @@ Partial Class frmSQL
         'lblServer
         '
         Me.lblServer.AutoSize = True
-        Me.lblServer.Location = New System.Drawing.Point(607, 18)
+        Me.lblServer.Location = New System.Drawing.Point(282, 66)
         Me.lblServer.Name = "lblServer"
         Me.lblServer.Size = New System.Drawing.Size(93, 13)
         Me.lblServer.TabIndex = 48
@@ -106,14 +106,14 @@ Partial Class frmSQL
         '
         'txtServer
         '
-        Me.txtServer.Location = New System.Drawing.Point(610, 37)
+        Me.txtServer.Location = New System.Drawing.Point(285, 83)
         Me.txtServer.Name = "txtServer"
-        Me.txtServer.Size = New System.Drawing.Size(212, 20)
+        Me.txtServer.Size = New System.Drawing.Size(353, 20)
         Me.txtServer.TabIndex = 47
         '
         'txtPassword
         '
-        Me.txtPassword.Location = New System.Drawing.Point(285, 35)
+        Me.txtPassword.Location = New System.Drawing.Point(729, 31)
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.txtPassword.Size = New System.Drawing.Size(301, 20)
@@ -122,7 +122,7 @@ Partial Class frmSQL
         'lblUsername
         '
         Me.lblUsername.AutoSize = True
-        Me.lblUsername.Location = New System.Drawing.Point(13, 18)
+        Me.lblUsername.Location = New System.Drawing.Point(401, 12)
         Me.lblUsername.Name = "lblUsername"
         Me.lblUsername.Size = New System.Drawing.Size(110, 13)
         Me.lblUsername.TabIndex = 44
@@ -130,23 +130,23 @@ Partial Class frmSQL
         '
         'txtUsername
         '
-        Me.txtUsername.Location = New System.Drawing.Point(12, 37)
+        Me.txtUsername.Location = New System.Drawing.Point(397, 31)
         Me.txtUsername.Name = "txtUsername"
-        Me.txtUsername.Size = New System.Drawing.Size(256, 20)
+        Me.txtUsername.Size = New System.Drawing.Size(326, 20)
         Me.txtUsername.TabIndex = 43
         '
         'cmbDSN
         '
         Me.cmbDSN.FormattingEnabled = True
-        Me.cmbDSN.Location = New System.Drawing.Point(284, 89)
+        Me.cmbDSN.Location = New System.Drawing.Point(10, 30)
         Me.cmbDSN.Name = "cmbDSN"
-        Me.cmbDSN.Size = New System.Drawing.Size(350, 21)
+        Me.cmbDSN.Size = New System.Drawing.Size(381, 21)
         Me.cmbDSN.TabIndex = 57
         '
         'lblDSN
         '
         Me.lblDSN.AutoSize = True
-        Me.lblDSN.Location = New System.Drawing.Point(287, 71)
+        Me.lblDSN.Location = New System.Drawing.Point(13, 12)
         Me.lblDSN.Name = "lblDSN"
         Me.lblDSN.Size = New System.Drawing.Size(30, 13)
         Me.lblDSN.TabIndex = 58
@@ -154,7 +154,7 @@ Partial Class frmSQL
         '
         'btnConnect
         '
-        Me.btnConnect.Location = New System.Drawing.Point(655, 89)
+        Me.btnConnect.Location = New System.Drawing.Point(905, 83)
         Me.btnConnect.Name = "btnConnect"
         Me.btnConnect.Size = New System.Drawing.Size(73, 20)
         Me.btnConnect.TabIndex = 59
@@ -438,14 +438,14 @@ Partial Class frmSQL
         Me.cmbPassword.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbPassword.FormattingEnabled = True
         Me.cmbPassword.Items.AddRange(New Object() {"Please choose...", "QuickBase Password", "QuickBase User Token"})
-        Me.cmbPassword.Location = New System.Drawing.Point(285, 10)
+        Me.cmbPassword.Location = New System.Drawing.Point(729, 6)
         Me.cmbPassword.Name = "cmbPassword"
         Me.cmbPassword.Size = New System.Drawing.Size(276, 21)
         Me.cmbPassword.TabIndex = 76
         '
         'btnAppToken
         '
-        Me.btnAppToken.Location = New System.Drawing.Point(160, 65)
+        Me.btnAppToken.Location = New System.Drawing.Point(160, 58)
         Me.btnAppToken.Name = "btnAppToken"
         Me.btnAppToken.Size = New System.Drawing.Size(19, 20)
         Me.btnAppToken.TabIndex = 79
@@ -454,7 +454,7 @@ Partial Class frmSQL
         '
         'btnUserToken
         '
-        Me.btnUserToken.Location = New System.Drawing.Point(565, 11)
+        Me.btnUserToken.Location = New System.Drawing.Point(1011, 7)
         Me.btnUserToken.Name = "btnUserToken"
         Me.btnUserToken.Size = New System.Drawing.Size(19, 20)
         Me.btnUserToken.TabIndex = 80
