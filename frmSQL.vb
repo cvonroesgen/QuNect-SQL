@@ -57,7 +57,7 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.37" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.39" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         cmbPassword.SelectedIndex = CInt(GetSetting(AppName, "Credentials", "passwordOrToken", "0"))
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
@@ -180,8 +180,8 @@ Public Class frmSQL
         Dim ver As String = quNectConn.ServerVersion
         Dim m As Match = Regex.Match(ver, "\d+\.(\d+)\.(\d+)\.(\d+)")
         qdbVer.year = CInt(m.Groups(1).Value)
-        qdbVer.major = CInt(m.Groups(2).Value)
-        qdbVer.minor = CInt(m.Groups(3).Value)
+            qdbVer.major = CInt(m.Groups(2).Value)
+            qdbVer.minor = CInt(m.Groups(3).Value)
         If (qdbVer.major < 7) Or (qdbVer.major = 7 And qdbVer.minor < 10) Then
             MsgBox("You are running the " & ver & " version of QuNect ODBC for QuickBase. Please install the latest version from http://qunect.com/download/QuNect.exe", MsgBoxStyle.OkOnly, AppName)
             quNectConn.Close()
@@ -250,21 +250,25 @@ Public Class frmSQL
     End Sub
     Private Sub GetDSNs()
         Dim strKeyNames() As String
-        Dim intKeyValues As Integer
+        Dim intKeyCount As Integer
         Dim intCount As Integer
         Dim key As Microsoft.Win32.RegistryKey
         cmbDSN.Items.Add("Use a DSN-less connection")
         key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("software\odbc\odbc.ini\odbc data sources")
-        strKeyNames = key.GetValueNames() 'Get an array of the value names
-        intKeyValues = key.ValueCount() 'Get the number of values
-        For intCount = 0 To intKeyValues - 1
-            cmbDSN.Items.Add(strKeyNames(intCount))
+        strKeyNames = key.GetValueNames() 'Get an array of the key names
+        intKeyCount = key.ValueCount() 'Get the number of keys
+        For intCount = 0 To intKeyCount - 1
+            If key.GetValue(strKeyNames(intCount)) = "QuNect ODBC for QuickBase" Then
+                cmbDSN.Items.Add(strKeyNames(intCount))
+            End If
         Next
         key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("software\odbc\odbc.ini\odbc data sources")
         strKeyNames = key.GetValueNames() 'Get an array of the value names
-        intKeyValues = key.ValueCount() 'Get the number of values
-        For intCount = 0 To intKeyValues - 1
-            cmbDSN.Items.Add(strKeyNames(intCount))
+        intKeyCount = key.ValueCount() 'Get the number of values
+        For intCount = 0 To intKeyCount - 1
+            If key.GetValue(strKeyNames(intCount)) = "QuNect ODBC for QuickBase" Then
+                cmbDSN.Items.Add(strKeyNames(intCount))
+            End If
         Next
         cmbDSN.SelectedIndex = 0
     End Sub
@@ -304,7 +308,7 @@ Public Class frmSQL
             cmbTables.Items.Add("Please choose a table")
             Using tables As DataTable = connection.GetSchema("Tables")
                 For i = 0 To tables.Rows.Count - 1
-                    cmbTables.Items.Add(New qdbAppTable(tables.Rows(i)(0), tables.Rows(i)(4), tables.Rows(i)(2)))
+                    cmbTables.Items.Add(New qdbAppTable(tables.Rows(i)(0).ToString(), tables.Rows(i)(4).ToString(), tables.Rows(i)(2).ToString()))
                 Next
             End Using
             cmbTables.SelectedIndex = 0
