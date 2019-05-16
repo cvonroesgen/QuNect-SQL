@@ -57,7 +57,7 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.39" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Text = "QuNect SQL 1.0.0.40" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         cmbPassword.SelectedIndex = CInt(GetSetting(AppName, "Credentials", "passwordOrToken", "0"))
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
@@ -80,6 +80,11 @@ Public Class frmSQL
     End Sub
     Private Function buildConnectionString() As String
         If cmbDSN.SelectedIndex = 0 Then
+            If txtPassword.Text.Contains(";") Then
+                Throw New System.Exception("Although Quick Base allows semicolons in passwords the ODBC standard does not permit semicolons." & vbCrLf & "Please change your Quick Base password to eliminate semicolons or use a Quick Base user token instead of a password.")
+                Return ""
+            End If
+
             Dim connectionString As String = ""
             If cmbPassword.SelectedIndex = 0 Then
                 cmbPassword.Focus()
