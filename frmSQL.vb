@@ -3,6 +3,8 @@ Imports System.Data.Odbc
 Imports System.Text.RegularExpressions
 Public Class frmSQL
     Private Const AppName = "QuNectSQL"
+    Private Const qunectSQLVersion = "1.0.0.42"
+    Private cmdLineArgs() As String
     Public Adpt As OdbcDataAdapter
     Public ds As DataSet
     Public connection As OdbcConnection
@@ -57,7 +59,28 @@ Public Class frmSQL
     Private qdbVer As qdbVersion = New qdbVersion
 
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
-        Text = "QuNect SQL 1.0.0.40" ' & ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString
+        Dim dsn As String
+        cmdLineArgs = System.Environment.GetCommandLineArgs()
+        If cmdLineArgs.Length = 3 Then
+            dsn = cmdLineArgs(1)
+            Dim sqlFile As String = cmdLineArgs(2)
+            Dim SqlStatement As String
+            Try
+                SqlStatement = My.Computer.FileSystem.ReadAllText(sqlFile)
+                connection = getquNectConn("DSN=" & dsn & ";")
+            Catch ex As Exception
+                Console.Write(ex.Message)
+                Me.Close()
+                Exit Sub
+            End Try
+            checkExecuteSQL(SqlStatement, False, False)
+            If Not connection Is Nothing Then
+                connection.Close()
+            End If
+            Me.Close()
+            Exit Sub
+        End If
+        Me.Text = "QuNect SQL " & qunectSQLVersion
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         cmbPassword.SelectedIndex = CInt(GetSetting(AppName, "Credentials", "passwordOrToken", "0"))
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
@@ -72,7 +95,9 @@ Public Class frmSQL
         Else
             ckbDetectProxy.Checked = False
         End If
-        Dim dsn As String = GetSetting(AppName, "Connection", "DSN", "")
+        dsn = GetSetting(AppName, "Connection", "DSN", "")
+
+
         GetDSNs()
         cmbDSN.SelectedIndex = cmbDSN.FindStringExact(dsn)
         Me.Show()
@@ -100,28 +125,18 @@ Public Class frmSQL
             Return "DSN=" & cmbDSN.Text
         End If
     End Function
-    Private Sub checkExecuteSQL(checkOnly As Boolean)
-        Dim Sql As String = txtSQL.Text
-        If CBool(txtSQL.SelectedText.Length) Then
-            Sql = txtSQL.SelectedText
+    Private Sub checkExecuteSQL(Sql As String, checkOnly As Boolean, uiAvailable As Boolean)
+        If uiAvailable Then
+            startStopElapsedTime(True)
+            Me.Cursor = Cursors.WaitCursor
         End If
-        startStopElapsedTime(True)
-        Me.Cursor = Cursors.WaitCursor
         Try
 
             Dim selectRegex As New Regex("^\s*SELECT ", RegexOptions.IgnoreCase)
-            If selectRegex.IsMatch(Sql) And Not checkOnly Then
+            If selectRegex.IsMatch(Sql) And uiAvailable And Not checkOnly Then
                 Adpt = New OdbcDataAdapter(Sql, connection)
-
                 ds = New DataSet()
                 Adpt.Fill(ds)
-                If checkOnly Then
-                    Adpt.Dispose()
-                    Me.Cursor = Cursors.Default
-                    MsgBox("Syntax OK!", MsgBoxStyle.OkOnly, AppName)
-                    txtSQL.Focus()
-                    Exit Sub
-                End If
                 Adpt.Dispose()
                 frmResults.dgvSQL.DataSource = ds.Tables(0)
                 frmResults.Text = Sql
@@ -138,32 +153,46 @@ Public Class frmSQL
                         Exit Sub
                     End If
                     Dim i As Integer = command.ExecuteNonQuery()
-                    Dim deleteRegex As New Regex("^\s*DELETE ", RegexOptions.IgnoreCase)
-                    Dim updateRegex As New Regex("^\s*UPDATE ", RegexOptions.IgnoreCase)
-                    Dim insertRegex As New Regex("^\s*INSERT ", RegexOptions.IgnoreCase)
-                    Dim verb As String = "processed"
-                    If deleteRegex.IsMatch(Sql) Then
-                        verb = "deleted"
-                    ElseIf updateRegex.IsMatch(Sql) Then
-                        verb = "updated"
-                    ElseIf insertRegex.IsMatch(Sql) Then
-                        verb = "inserted/updated"
+                    If uiAvailable Then
+                        Dim deleteRegex As New Regex("^\s*DELETE ", RegexOptions.IgnoreCase)
+                        Dim updateRegex As New Regex("^\s*UPDATE ", RegexOptions.IgnoreCase)
+                        Dim insertRegex As New Regex("^\s*INSERT ", RegexOptions.IgnoreCase)
+                        Dim verb As String = "processed"
+                        If deleteRegex.IsMatch(Sql) Then
+                            verb = "deleted"
+                        ElseIf updateRegex.IsMatch(Sql) Then
+                            verb = "updated"
+                        ElseIf insertRegex.IsMatch(Sql) Then
+                            verb = "inserted/updated"
+                        End If
+                        Dim msg As String = i & " records were " & verb & "."
+                        If i = -1 Then msg = "Success!"
+                        MsgBox(msg, MsgBoxStyle.OkOnly, AppName)
                     End If
-                    Dim msg As String = i & " records were " & verb & "."
-                    If i = -1 Then msg = "Success!"
-                    MsgBox(msg, MsgBoxStyle.OkOnly, AppName)
                 End Using
-                txtSQL.Focus()
+                If uiAvailable Then
+                    txtSQL.Focus()
+                End If
             End If
         Catch excpt As Exception
-            txtSQL.Focus()
-            MsgBox(excpt.Message, MsgBoxStyle.OkOnly, AppName)
+            If uiAvailable Then
+                txtSQL.Focus()
+                MsgBox(excpt.Message, MsgBoxStyle.OkOnly, AppName)
+            Else
+                Console.WriteLine(excpt.Message)
+            End If
         End Try
-        startStopElapsedTime(False)
-        Me.Cursor = Cursors.Default
+        If uiAvailable Then
+            startStopElapsedTime(False)
+            Me.Cursor = Cursors.Default
+        End If
     End Sub
     Private Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
-        checkExecuteSQL(False)
+        Dim SqlStatement As String = txtSQL.Text
+        If CBool(txtSQL.SelectedText.Length) Then
+            SqlStatement = txtSQL.SelectedText
+        End If
+        checkExecuteSQL(SqlStatement, False, True)
     End Sub
 
     Private Function getquNectConn(connectionString As String) As OdbcConnection
@@ -389,7 +418,11 @@ Public Class frmSQL
         insertReplaceText(txtSQL, "'" & txtText.Text & "'")
     End Sub
     Private Sub btnCheckSQL_Click(sender As Object, e As EventArgs) Handles btnCheckSQL.Click
-        checkExecuteSQL(True)
+        Dim SqlStatement As String = txtSQL.Text
+        If CBool(txtSQL.SelectedText.Length) Then
+            SqlStatement = txtSQL.SelectedText
+        End If
+        checkExecuteSQL(SqlStatement, True, True)
     End Sub
 
     Private Sub chkWrap_CheckedChanged(sender As Object, e As EventArgs) Handles chkWrap.CheckedChanged
