@@ -3,7 +3,7 @@ Imports System.Data.Odbc
 Imports System.Text.RegularExpressions
 Public Class frmSQL
     Private Const AppName = "QuNectSQL"
-    Private Const qunectSQLVersion = "1.0.0.42"
+    Private Const qunectSQLVersion = "1.0.0.43"
     Private cmdLineArgs() As String
     Public Adpt As OdbcDataAdapter
     Public ds As DataSet
@@ -69,7 +69,7 @@ Public Class frmSQL
                 SqlStatement = My.Computer.FileSystem.ReadAllText(sqlFile)
                 connection = getquNectConn("DSN=" & dsn & ";")
             Catch ex As Exception
-                Console.Write(ex.Message)
+                Console.WriteLine(Now & " " & ex.Message)
                 Me.Close()
                 Exit Sub
             End Try
@@ -179,7 +179,7 @@ Public Class frmSQL
                 txtSQL.Focus()
                 MsgBox(excpt.Message, MsgBoxStyle.OkOnly, AppName)
             Else
-                Console.WriteLine(excpt.Message)
+                Console.WriteLine(Now & " " & excpt.Message)
             End If
         End Try
         If uiAvailable Then
