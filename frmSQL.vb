@@ -1,9 +1,8 @@
-﻿Imports System.ComponentModel
+Imports System.ComponentModel
 Imports System.Data.Odbc
 Imports System.Text.RegularExpressions
 Public Class frmSQL
     Private Const AppName = "QuNectSQL"
-    Private Const qunectSQLVersion = "1.0.0.43"
     Private cmdLineArgs() As String
     Public Adpt As OdbcDataAdapter
     Public ds As DataSet
@@ -80,7 +79,8 @@ Public Class frmSQL
             Me.Close()
             Exit Sub
         End If
-        Me.Text = "QuNect SQL " & qunectSQLVersion
+        Dim myBuildInfo As FileVersionInfo = FileVersionInfo.GetVersionInfo(Application.ExecutablePath)
+        Me.Text = "QuNect SQL " & myBuildInfo.ProductVersion
         txtUsername.Text = GetSetting(AppName, "Credentials", "username")
         cmbPassword.SelectedIndex = CInt(GetSetting(AppName, "Credentials", "passwordOrToken", "0"))
         txtPassword.Text = GetSetting(AppName, "Credentials", "password")
@@ -496,7 +496,7 @@ Public Class frmSQL
         Dim sql As String = "INSERT INTO " & """" & cmbTables.SelectedItem.ToString & """ ("
 
         sql &= createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, False)
-        sql &= """) VALUES ( "
+        sql &= ") VALUES ( "
         sql &= createCommaSeparatedValues(ListBoxColumns.SelectedItems, False)
         sql = sql.TrimEnd(New Char() {CType(",", Char), CType(" ", Char)})
         sql &= ")"
