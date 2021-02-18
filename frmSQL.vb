@@ -139,7 +139,7 @@ Public Class frmSQL
                 Adpt.Fill(ds)
                 Adpt.Dispose()
                 frmResults.dgvSQL.DataSource = ds.Tables(0)
-                frmResults.Text = Sql
+                frmResults.Text = CStr(ds.Tables(0).Rows.Count) + " rows from  " + Sql
                 frmResults.Show()
                 frmResults.TopMost = True
             Else
