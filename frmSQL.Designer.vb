@@ -65,6 +65,7 @@ Partial Class frmSQL
         Me.cmbPassword = New System.Windows.Forms.ComboBox()
         Me.btnAppToken = New System.Windows.Forms.Button()
         Me.btnUserToken = New System.Windows.Forms.Button()
+        Me.chkAliases = New System.Windows.Forms.CheckBox()
         Me.gbSQL.SuspendLayout()
         Me.GroupBoxTables.SuspendLayout()
         Me.SuspendLayout()
@@ -166,6 +167,7 @@ Partial Class frmSQL
         Me.gbSQL.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gbSQL.Controls.Add(Me.chkAliases)
         Me.gbSQL.Controls.Add(Me.lblElapsed)
         Me.gbSQL.Controls.Add(Me.btnFields)
         Me.gbSQL.Controls.Add(Me.cmbCatalogs)
@@ -461,6 +463,16 @@ Partial Class frmSQL
         Me.btnUserToken.Text = "?"
         Me.btnUserToken.UseVisualStyleBackColor = True
         '
+        'chkAliases
+        '
+        Me.chkAliases.AutoSize = True
+        Me.chkAliases.Location = New System.Drawing.Point(447, 22)
+        Me.chkAliases.Name = "chkAliases"
+        Me.chkAliases.Size = New System.Drawing.Size(189, 17)
+        Me.chkAliases.TabIndex = 91
+        Me.chkAliases.Text = "Use aliases in SELECT statements"
+        Me.chkAliases.UseVisualStyleBackColor = True
+        '
         'frmSQL
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -532,4 +544,5 @@ Partial Class frmSQL
     Friend WithEvents btnAppToken As Button
     Friend WithEvents btnUserToken As Button
     Friend WithEvents lblElapsed As Label
+    Friend WithEvents chkAliases As CheckBox
 End Class

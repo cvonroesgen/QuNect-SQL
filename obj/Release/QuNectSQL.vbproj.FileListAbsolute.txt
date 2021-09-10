@@ -1,0 +1,17 @@
+C:\QuNect\QuNect-SQL\bin\Release\QuNectSQL.exe.config
+C:\QuNect\QuNect-SQL\bin\Release\QuNectSQL.exe.manifest
+C:\QuNect\QuNect-SQL\bin\Release\QuNectSQL.application
+C:\QuNect\QuNect-SQL\bin\Release\QuNectSQL.exe
+C:\QuNect\QuNect-SQL\bin\Release\QuNectSQL.pdb
+C:\QuNect\QuNect-SQL\bin\Release\QuNectSQL.xml
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.frmSQL.resources
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.Resources.resources
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.frmResults.resources
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.vbproj.GenerateResource.cache
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.vbproj.CoreCompileInputs.cache
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.TrustInfo.xml
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.exe.manifest
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.application
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.exe
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.xml
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.pdb

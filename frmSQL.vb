@@ -459,7 +459,8 @@ Public Class frmSQL
         Next
         createCommaSeparatedValues = createCommaSeparatedValues.TrimEnd(New Char() {CType(",", Char), CType(" ", Char)})
     End Function
-    Private Function createCommaSeparatedColumns(ByRef columns As ListBox.SelectedObjectCollection, fromCreateSelect As Boolean, addType As Boolean) As String
+    Private Function createCommaSeparatedColumns(ByRef columns As ListBox.SelectedObjectCollection, fromCreateSelect As Boolean, addType As Boolean, useAliases As Boolean) As String
+        Dim strFID As String
         If fromCreateSelect And columns.Count = 0 Then
             Return "*"
         End If
@@ -471,7 +472,13 @@ Public Class frmSQL
             Next
         End If
         For i = 0 To columns.Count - 1
-            createCommaSeparatedColumns &= comma & """" & columns(i).Name & """"
+            If useAliases Then
+                strFID = Regex.Replace(columns(i).Remark, "^.*\s", "")
+                strFID = strFID & " AS "
+            Else
+                strFID = ""
+            End If
+            createCommaSeparatedColumns &= comma & strFID & """" & columns(i).Name & """"
             If addType Then
                 createCommaSeparatedColumns &= " " & columns(i).type
                 If Regex.Match(columns(i).type, "varchar", RegexOptions.IgnoreCase).Success Then
@@ -487,7 +494,7 @@ Public Class frmSQL
     Private Sub btnSelect_Click(sender As Object, e As EventArgs) Handles btnSelect.Click
         If cmbTables.SelectedIndex <= 0 Then Exit Sub
         Dim sql As String = "SELECT "
-        sql &= createCommaSeparatedColumns(ListBoxColumns.SelectedItems, True, False)
+        sql &= createCommaSeparatedColumns(ListBoxColumns.SelectedItems, True, False, chkAliases.Checked)
         sql &= " FROM """ & cmbTables.SelectedItem.ToString & """"
         insertReplaceText(txtSQL, sql)
     End Sub
@@ -495,7 +502,7 @@ Public Class frmSQL
         If cmbTables.SelectedIndex <= 0 Then Exit Sub
         Dim sql As String = "INSERT INTO " & """" & cmbTables.SelectedItem.ToString & """ ("
 
-        sql &= createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, False)
+        sql &= createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, False, False)
         sql &= ") VALUES ( "
         sql &= createCommaSeparatedValues(ListBoxColumns.SelectedItems, False)
         sql = sql.TrimEnd(New Char() {CType(",", Char), CType(" ", Char)})
@@ -529,7 +536,7 @@ Public Class frmSQL
         Dim tableName As String = cmbTables.Text
         Dim catalog As String = cmbTables.SelectedItem.catalog
         Dim m = Regex.Match(tableName, "^(.*)[ _][a-kmnp-z2-9]+$")
-        Dim sql As String = "CREATE TABLE ""Copy of " & m.Groups(1).Value.Substring(catalog.Length + 2) & " " & cmbCatalogs.Items(cmbCatalogs.SelectedIndex).dbid & """ (" & createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, True) & ")"
+        Dim sql As String = "CREATE TABLE ""Copy of " & m.Groups(1).Value.Substring(catalog.Length + 2) & " " & cmbCatalogs.Items(cmbCatalogs.SelectedIndex).dbid & """ (" & createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, True, False) & ")"
         insertReplaceText(txtSQL, sql)
     End Sub
 
@@ -540,12 +547,12 @@ Public Class frmSQL
     End Sub
 
     Private Sub btnALTER_Click(sender As Object, e As EventArgs) Handles btnALTER.Click
-        Dim sql As String = "ALTER TABLE """ & cmbTables.Text & """ ADD " & createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, True)
+        Dim sql As String = "ALTER TABLE """ & cmbTables.Text & """ ADD " & createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, True, False)
         insertReplaceText(txtSQL, sql)
     End Sub
 
     Private Sub btnFields_Click(sender As Object, e As EventArgs) Handles btnFields.Click
-        insertReplaceText(txtSQL, createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, False))
+        insertReplaceText(txtSQL, createCommaSeparatedColumns(ListBoxColumns.SelectedItems, False, False, False))
     End Sub
     Private Sub cmbPassword_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPassword.SelectedIndexChanged
         SaveSetting(AppName, "Credentials", "passwordOrToken", cmbPassword.SelectedIndex)
