@@ -132,7 +132,7 @@ Public Class frmSQL
         End If
         Try
 
-            Dim selectRegex As New Regex("^\s*SELECT ", RegexOptions.IgnoreCase)
+            Dim selectRegex As New Regex("^\s*SELECT\s", RegexOptions.IgnoreCase)
             If selectRegex.IsMatch(Sql) And uiAvailable And Not checkOnly Then
                 Adpt = New OdbcDataAdapter(Sql, connection)
                 ds = New DataSet()
@@ -154,9 +154,9 @@ Public Class frmSQL
                     End If
                     Dim i As Integer = command.ExecuteNonQuery()
                     If uiAvailable Then
-                        Dim deleteRegex As New Regex("^\s*DELETE ", RegexOptions.IgnoreCase)
-                        Dim updateRegex As New Regex("^\s*UPDATE ", RegexOptions.IgnoreCase)
-                        Dim insertRegex As New Regex("^\s*INSERT ", RegexOptions.IgnoreCase)
+                        Dim deleteRegex As New Regex("^\s*DELETE\s", RegexOptions.IgnoreCase)
+                        Dim updateRegex As New Regex("^\s*UPDATE\s", RegexOptions.IgnoreCase)
+                        Dim insertRegex As New Regex("^\s*INSERT\s", RegexOptions.IgnoreCase)
                         Dim verb As String = "processed"
                         If deleteRegex.IsMatch(Sql) Then
                             verb = "deleted"
