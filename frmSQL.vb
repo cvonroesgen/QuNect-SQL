@@ -146,30 +146,35 @@ Public Class frmSQL
                 Adpt.Fill(ds)
                 Adpt.Dispose()
                 If csvOutput IsNot Nothing Then
+                    Dim comma As String = ""
                     Dim objWriter As System.IO.StreamWriter
                     objWriter = New System.IO.StreamWriter(csvOutput)
                     For Each Coll As DataColumn In ds.Tables(0).Columns
                         objWriter.Write("""")
                         objWriter.Write(Replace(Coll.ColumnName, """", """"""))
-                        objWriter.Write(""",")
+                        objWriter.Write("""" & comma)
+                        comma = ","
                     Next
+                    comma = ""
                     objWriter.Write(vbCrLf)
                     For Each Row As DataRow In ds.Tables(0).Rows
                         For Each Coll As DataColumn In ds.Tables(0).Columns
                             objWriter.Write("""")
                             objWriter.Write(Replace(CStr(Row(Coll.ColumnName).ToString()), """", """"""))
-                            objWriter.Write(""",")
+                            objWriter.Write("""" & comma)
+                            comma = ","
                         Next
                         objWriter.Write(vbCrLf)
+                        comma = ""
                     Next
                     objWriter.Close()
                     Return
+                ElseIf uiAvailable Then
+                    frmResults.dgvSQL.DataSource = ds.Tables(0)
+                    frmResults.Text = CStr(ds.Tables(0).Rows.Count) + " rows from  " + Sql
+                    frmResults.Show()
+                    frmResults.TopMost = True
                 End If
-
-                frmResults.dgvSQL.DataSource = ds.Tables(0)
-                frmResults.Text = CStr(ds.Tables(0).Rows.Count) + " rows from  " + Sql
-                frmResults.Show()
-                frmResults.TopMost = True
             Else
                 Using command As OdbcCommand = New OdbcCommand(Sql, connection)
                     If checkOnly Then
