@@ -150,18 +150,18 @@ Public Class frmSQL
                     Dim objWriter As System.IO.StreamWriter
                     objWriter = New System.IO.StreamWriter(csvOutput)
                     For Each Coll As DataColumn In ds.Tables(0).Columns
-                        objWriter.Write("""")
-                        objWriter.Write(Replace(Coll.ColumnName, """", """"""))
                         objWriter.Write("""" & comma)
+                        objWriter.Write(Replace(Coll.ColumnName, """", """"""))
+                        objWriter.Write("""")
                         comma = ","
                     Next
                     comma = ""
                     objWriter.Write(vbCrLf)
                     For Each Row As DataRow In ds.Tables(0).Rows
                         For Each Coll As DataColumn In ds.Tables(0).Columns
-                            objWriter.Write("""")
+                            objWriter.Write( & comma"""")
                             objWriter.Write(Replace(CStr(Row(Coll.ColumnName).ToString()), """", """"""))
-                            objWriter.Write("""" & comma)
+                            objWriter.Write("""")
                             comma = ","
                         Next
                         objWriter.Write(vbCrLf)
