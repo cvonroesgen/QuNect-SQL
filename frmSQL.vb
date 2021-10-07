@@ -60,7 +60,7 @@ Public Class frmSQL
     Private Sub frmSQL_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim dsn As String
         cmdLineArgs = System.Environment.GetCommandLineArgs()
-        If cmdLineArgs.Length = 3 Then
+        If cmdLineArgs.Length >= 3 And cmdLineArgs.Length <= 4 Then
             dsn = cmdLineArgs(1)
             Dim sqlFile As String = cmdLineArgs(2)
             Dim SqlStatement As String
@@ -72,7 +72,11 @@ Public Class frmSQL
                 Me.Close()
                 Exit Sub
             End Try
-            checkExecuteSQL(SqlStatement, False, False)
+            If cmdLineArgs.Length = 4 Then
+                checkExecuteSQL(SqlStatement, False, False, cmdLineArgs(3))
+            Else
+                checkExecuteSQL(SqlStatement, False, False)
+            End If
             If Not connection Is Nothing Then
                 connection.Close()
             End If
@@ -126,6 +130,9 @@ Public Class frmSQL
         End If
     End Function
     Private Sub checkExecuteSQL(Sql As String, checkOnly As Boolean, uiAvailable As Boolean)
+        checkExecuteSQL(Sql, checkOnly, uiAvailable, Nothing)
+    End Sub
+    Private Sub checkExecuteSQL(Sql As String, checkOnly As Boolean, uiAvailable As Boolean, csvOutput As String)
         If uiAvailable Then
             startStopElapsedTime(True)
             Me.Cursor = Cursors.WaitCursor
@@ -133,11 +140,32 @@ Public Class frmSQL
         Try
 
             Dim selectRegex As New Regex("^\s*SELECT\s", RegexOptions.IgnoreCase)
-            If selectRegex.IsMatch(Sql) And uiAvailable And Not checkOnly Then
+            If selectRegex.IsMatch(Sql) And Not checkOnly Then
                 Adpt = New OdbcDataAdapter(Sql, connection)
                 ds = New DataSet()
                 Adpt.Fill(ds)
                 Adpt.Dispose()
+                If csvOutput IsNot Nothing Then
+                    Dim objWriter As System.IO.StreamWriter
+                    objWriter = New System.IO.StreamWriter(csvOutput)
+                    For Each Coll As DataColumn In ds.Tables(0).Columns
+                        objWriter.Write("""")
+                        objWriter.Write(Replace(Coll.ColumnName, """", """"""))
+                        objWriter.Write(""",")
+                    Next
+                    objWriter.Write(vbCrLf)
+                    For Each Row As DataRow In ds.Tables(0).Rows
+                        For Each Coll As DataColumn In ds.Tables(0).Columns
+                            objWriter.Write("""")
+                            objWriter.Write(Replace(CStr(Row(Coll.ColumnName).ToString()), """", """"""))
+                            objWriter.Write(""",")
+                        Next
+                        objWriter.Write(vbCrLf)
+                    Next
+                    objWriter.Close()
+                    Return
+                End If
+
                 frmResults.dgvSQL.DataSource = ds.Tables(0)
                 frmResults.Text = CStr(ds.Tables(0).Rows.Count) + " rows from  " + Sql
                 frmResults.Show()
