@@ -384,7 +384,11 @@ Public Class frmSQL
             Using quNectCmd = New OdbcCommand("SELECT * FROM CATALOGS", connection)
                 Dim dr As OdbcDataReader = quNectCmd.ExecuteReader()
                 While (dr.Read())
-                    cmbCatalogs.Items.Add(New qdbAppTable(dr.GetString(0), dr.GetString(4), dr.GetString(0)))
+                    If dr.FieldCount = 3 Then
+                        cmbCatalogs.Items.Add(New qdbAppTable(dr.GetString(0), dr.GetString(2), dr.GetString(0)))
+                    Else
+                        cmbCatalogs.Items.Add(New qdbAppTable(dr.GetString(0), dr.GetString(4), dr.GetString(0)))
+                    End If
                 End While
             End Using
             cmbCatalogs.SelectedIndex = 0

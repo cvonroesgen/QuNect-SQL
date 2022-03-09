@@ -34,3 +34,4 @@ C:\QuNect\QuNect-SQL\bin\Debug\QuNectSQL.pdb
 C:\QuNect\QuNect-SQL\bin\Debug\QuNectSQL.xml
 C:\QuNect\QuNect-SQL\obj\Debug\QuNectSQL.exe.manifest
 C:\QuNect\QuNect-SQL\obj\Debug\QuNectSQL.application
+C:\QuNect\QuNect-SQL\obj\Debug\QuNectSQL.vbproj.SuggestedBindingRedirects.cache

@@ -16,3 +16,4 @@ C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.exe
 C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.xml
 C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.pdb
 C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.vbproj.AssemblyReference.cache
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.vbproj.SuggestedBindingRedirects.cache

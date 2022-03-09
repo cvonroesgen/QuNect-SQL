@@ -1,11 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\bin",
-    "\\bin\\Debug",
-    "\\bin\\Debug\\app.publish",
-    "\\My Project"
+    ""
   ],
-  "SelectedNode": "\\QuNectSQL.vbproj",
+  "SelectedNode": "\\QuNectSQL.sln",
   "PreviewInSolutionExplorer": false
 }
