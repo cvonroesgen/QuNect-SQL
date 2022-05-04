@@ -4,6 +4,7 @@ C:\QuNect\QuNect-SQL\bin\Release\QuNectSQL.application
 C:\QuNect\QuNect-SQL\bin\Release\QuNectSQL.exe
 C:\QuNect\QuNect-SQL\bin\Release\QuNectSQL.pdb
 C:\QuNect\QuNect-SQL\bin\Release\QuNectSQL.xml
+C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.vbproj.SuggestedBindingRedirects.cache
 C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.frmSQL.resources
 C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.Resources.resources
 C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.frmResults.resources
@@ -16,4 +17,3 @@ C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.exe
 C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.xml
 C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.pdb
 C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.vbproj.AssemblyReference.cache
-C:\QuNect\QuNect-SQL\obj\Release\QuNectSQL.vbproj.SuggestedBindingRedirects.cache

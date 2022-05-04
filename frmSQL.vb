@@ -378,6 +378,11 @@ Public Class frmSQL
                     cmbTables.Items.Add(New qdbAppTable(tables.Rows(i)(0).ToString(), tables.Rows(i)(4).ToString(), tables.Rows(i)(2).ToString()))
                 Next
             End Using
+            Using tables As DataTable = connection.GetSchema("Views")
+                For i = 0 To tables.Rows.Count - 1
+                    cmbTables.Items.Add(New qdbAppTable(tables.Rows(i)(0).ToString(), tables.Rows(i)(4).ToString(), tables.Rows(i)(2).ToString()))
+                Next
+            End Using
             cmbTables.SelectedIndex = 0
             cmbCatalogs.Items.Clear()
             cmbCatalogs.Items.Add("Please choose an Application")
