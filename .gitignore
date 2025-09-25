@@ -1,0 +1,17 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.db
+*.db-shm
+*.db-wal
+*.vsidx
+/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
+/.vs/QuNectSQL/v17/.suo
+/obj/Release/QuNectSQL.vbproj.AssemblyReference.cache
+/obj/Release
+/.vs
+/publish/Application Files/QuNectSQL_1_0_0_55
+/publish/QuNectSQL.application
+/publish/setup.exe
+/bin/Release/app.publish/Application Files/QuNectSQL_1_0_0_55
